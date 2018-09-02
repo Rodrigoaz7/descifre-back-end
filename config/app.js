@@ -22,6 +22,9 @@ const env = require('dotenv');
 /* Importando o módulo do mongoose. */
 const mongoose = require('mongoose');
 
+/* Eventos do nodeJS */
+const eventEmitter = new (require('events').EventEmitter)();
+
 /* configurar o middleware express.static */
 app.use(express.static('./public'));
 
@@ -49,6 +52,10 @@ mongoose.connection.on('error',err => {
 consign().include('src/models')
 	.then('src/routes')
 	.then('src/controllers').into(app);
+	
+eventEmitter.on('error', ()=>{
+	console.log('oi')
+});
 
 /* exportar o objeto app */
 module.exports = app;

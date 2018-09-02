@@ -15,8 +15,9 @@ exports.salvarToken = async (token) => {
     const _token = new Token({
         token: token
     });
-    await genericDAO.salvar(_token);
-    return true;
+    const salvarToken = await genericDAO.salvar(_token);
+    if(salvarToken.error) return salvarToken;
+    return salvarToken;
 }
 
 exports.destruirToken = async (token) => {

@@ -1,20 +1,16 @@
 /*
     Autor: Marcus Dantas
 */
-
 const mongoose = require('mongoose');
-
 const Usuario = mongoose.model('Usuario');
 const Pessoa = mongoose.model('Pessoa');
-
+const Token = mongoose.model('Token');
 const validators = require('../../../index');
-
 const crypto = require('crypto');
-
+const returns = require('../../../util/returns');
 const httpCodes = require('../../../util/httpCodes');
 const responses = require('../../../util/responses');
 const genericDAO = require('../../../util/genericDAO');
-
 const utilToken = require('../../../util/token');
 
 exports.realizarCadastro = async (req, res) => {
@@ -43,8 +39,8 @@ exports.realizarCadastro = async (req, res) => {
 
     /* Salvando uma pessoa no banco se ocorrer tudo bem temos um retorno dos dados se não um null */
     let salvarPessoa = await genericDAO.salvar(novaPessoa);
-    
-    if(!salvarPessoa) return res.status(httpCodes.get('ServerErro')).json({status: false, msg: responses.getValue('problemaInterno')});
+
+    if(salvarPessoa.error) return returns.error(res, salvarPessoa);
     
     /* Criando um novo objeto Usuario */
     let novoUsuario = new Usuario({
@@ -56,8 +52,8 @@ exports.realizarCadastro = async (req, res) => {
     /* Salvando um usuário no banco se ocorrer tudo bem temos um retorno dos dados se não um null */
     let salvarUsuario = await genericDAO.salvar(novoUsuario);
 
-    if(!salvarUsuario) return res.status(httpCodes.get('ServerErro')).json({status: false, msg: responses.getValue('problemaInterno')});
-
+    if(salvarPessoa.error) returns.returnError(res, salvarUsuario);
+    
     let usuarioToken = {
         idUsuario: salvarUsuario._id,
         idPessoa: salvarPessoa._id,
@@ -65,7 +61,15 @@ exports.realizarCadastro = async (req, res) => {
         email: salvarPessoa.email,
         permissoes: salvarUsuario.permissoes
     };
+
     const token = utilToken.gerarToken(usuarioToken, 360);
+    
+    let novoToken = new Token({token: token});
+
+    let salvarToken = genericDAO.salvar(novoToken);
+
+    if(salvarToken.error) returns.returnError(res, salvarToken);
+
     /* Retorno com sucesso */
-    return res.status(httpCodes.get('OK')).json({status: true, msg:responses.getValue('usuarioCriado'), token: token});
+    return res.status(httpCodes.get('OK')).json({status: true, msg:responses.getValue('usuarioCriado'), token: token, usuario: usuarioToken});
 };
