@@ -21,7 +21,7 @@ exports.deletarUmObjeto = async (obj, data) => {
     let codeError;
     
     try{
-        objSave = await obj.deleteOne({data});
+        objSave = await obj.deleteOne({...data});
     }catch(error){
         objSave = {
             error: true,

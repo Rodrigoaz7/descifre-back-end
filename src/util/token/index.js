@@ -24,9 +24,9 @@ exports.salvarToken = async (token) => {
 
 exports.destruirToken = async (token) => {
     if(!token) return {msg: "Você deve passar um token."};
-    
-    const _token = await genericDAO.deletarUmObjeto(Token, {token:token});
 
+    const _token = await genericDAO.deletarUmObjeto(Token, {token:token});
+    
     if(_token.error) return false;
     else if(_token.n==0) return false;
     else return true;
