@@ -5,10 +5,11 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const UsuarioSchema = new Schema({
-    idPessoa: {
+    pessoa: {
         type: Schema.Types.ObjectId,
-        ref: 'pessoas'
+        ref: 'Pessoa'
     },
+    email: String,
     permissoes: [String],
     senha: String,
     recuperarSenha: {

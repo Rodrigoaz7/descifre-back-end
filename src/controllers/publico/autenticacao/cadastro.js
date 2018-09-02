@@ -44,7 +44,8 @@ exports.realizarCadastro = async (req, res) => {
     
     /* Criando um novo objeto Usuario */
     let novoUsuario = new Usuario({
-        idPessoa: novaPessoa._id,
+        pessoa: novaPessoa._id,
+        email: novaPessoa.email,
         permissoes: ['Public'],
         senha: req.body.senha,
     });

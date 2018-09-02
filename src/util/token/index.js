@@ -6,6 +6,8 @@ const jwt = require('jsonwebtoken');
 const secret = require('../../../config/variables').secret;
 const genericDAO = require('../genericDAO');
 
+const returns = require('../returns');
+
 exports.getTokenRequest = (req) => {
     return req.body.token || req.query.token || req.headers['x-access-token'] || req.params.token;
 };
@@ -22,9 +24,12 @@ exports.salvarToken = async (token) => {
 
 exports.destruirToken = async (token) => {
     if(!token) return {msg: "Você deve passar um token."};
-    const _token = await Token.deleteOne({token:token});
-    if(_token.n!==0) return true;
-    else return false;
+    
+    const _token = await genericDAO.deletarUmObjeto(Token, {token:token});
+
+    if(_token.error) return false;
+    else if(_token.n==0) return false;
+    else return true;
 };
 
 const decoded = exports.decoded = (token)=>{
