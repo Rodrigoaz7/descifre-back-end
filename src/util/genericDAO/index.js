@@ -10,7 +10,8 @@ exports.salvar = async (obj) => {
         objSave = {
             error: true,
             code: error.code,
-            msgDev: error.errmsg
+            msgDev: error.errmsg,
+            mensagem: error.message
         };
     }
     return objSave;
@@ -26,7 +27,8 @@ exports.deletarUmObjeto = async (obj, data) => {
         objSave = {
             error: true,
             code: error.code,
-            msgDev: error.errmsg
+            msgDev: error.errmsg,
+            mensagem: error.message
         };
     }
     
@@ -45,7 +47,8 @@ exports.findOne = async (obj, populate, math) =>{
         return {
             error: true,
             code: error.code,
-            msgDev: error.errmsg
+            msgDev: error.errmsg,
+            mensagem: error.message
         };
     }    
 }

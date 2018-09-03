@@ -1,2 +1,3 @@
 const publico = require('./publico');
-module.exports = {publico};
+const administrador = require('./administrador');
+module.exports = {publico, administrador};

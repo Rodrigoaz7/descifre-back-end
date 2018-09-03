@@ -5,6 +5,8 @@ const responses = new Enum({
     'problemaInterno': "O sistema apresentou um erro de processamento interno.",
     "usuarioCriado": "Usuário criado com sucesso.",
     "usuarioInvalido": "Usuário ou senha inválidos.",
-    'erroToken': "Problema ao sair da sessão"
+    'erroToken': "Problema ao sair da sessão",
+    "questaoCriado": "Questão criado com sucesso",
+    "questaoDeletada": "Questão deletada com sucesso"
 });
 module.exports = responses;

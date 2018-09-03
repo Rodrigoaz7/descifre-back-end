@@ -16,5 +16,4 @@ const PessoaSchema = new Schema({
     sexo: String
 });
 
-
 mongoose.model('Pessoa', PessoaSchema);
