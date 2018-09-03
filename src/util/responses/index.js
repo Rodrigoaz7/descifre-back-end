@@ -7,6 +7,7 @@ const responses = new Enum({
     "usuarioInvalido": "Usuário ou senha inválidos.",
     'erroToken': "Problema ao sair da sessão",
     "questaoCriado": "Questão criado com sucesso",
-    "questaoDeletada": "Questão deletada com sucesso"
+    "questaoDeletada": "Questão deletada com sucesso",
+    "questaoAtualizada": "Questão atualizada com sucesso"
 });
 module.exports = responses;
