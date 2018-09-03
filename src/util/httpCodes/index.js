@@ -4,7 +4,7 @@ const httpCodes = new Enum({
     'OK': 200,
     'Criado': 201,
     'Aceito': 202,
-    'NaoAutorizado': 203,
+    'InformacaoParcial': 203,
     'ReqInvalida': 400,
     'NaoAutorizado': 401,
     'NotFound': 404,

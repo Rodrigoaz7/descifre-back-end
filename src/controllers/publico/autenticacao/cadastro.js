@@ -17,9 +17,9 @@ exports.realizarCadastro = async (req, res) => {
 
     /* Get nos erros do formulário */
     const erros = validators.publico.autenticacao.cadastro.errosCadastro(req);
-   
-    if (erros) return res.status(httpCodes.get('NaoAutorizado')).json({status:false, erros:erros});
-
+    
+    if (erros) return res.status(httpCodes.getValue('NaoAutorizado')).json({status:false, erros:erros});
+    
     /*
     *   Dados do usuário no ato do cadastro:
     *   req.body.nome
