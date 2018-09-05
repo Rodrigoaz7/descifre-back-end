@@ -8,6 +8,7 @@ const responses = new Enum({
     'erroToken': "Problema ao sair da sessão",
     "questaoCriado": "Questão criado com sucesso",
     "questaoDeletada": "Questão deletada com sucesso",
-    "questaoAtualizada": "Questão atualizada com sucesso"
+    "questaoAtualizada": "Questão atualizada com sucesso",
+    "dadosListados": "Dados listados com sucesso"
 });
 module.exports = responses;

@@ -11,7 +11,10 @@ const QuestaoSchema = new Schema({
     },
     enunciado: String,
     alternativas: [String],
-    categoria: String,
+    categoria:{
+        type: Schema.Types.ObjectId,
+        ref: 'Categoria'
+    },
     correta: Number,
     pontuacao: Number,
     dataCriacao: Date

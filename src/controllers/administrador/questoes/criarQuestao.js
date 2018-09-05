@@ -4,6 +4,7 @@
 const mongoose = require('mongoose');
 const ObjectID = require('mongodb').ObjectID
 const Questao = mongoose.model('Questao');
+const NovaCategoria = require('../categoriasQuestoes/criarCategoria');
 const Token = mongoose.model('Token');
 const validators = require('../../../index');
 const crypto = require('crypto');
@@ -18,11 +19,15 @@ exports.cadastrarQuestao = async (req, res) => {
     const erros = validators.administrador.questoes.criarQuestao.errosCadastro(req);
     if (erros) return res.status(httpCodes.getValue('ReqInvalida')).json({status:false, erros:erros});
     
+    // Recebe o id de nova categoria, caso ela ainda nao exista.
+    // Ou recebe o id da categoria ja existente
+    let id_categoria = await NovaCategoria.cadastrarCategoria(req, res);
+
     let novaQuestao = new Questao({
         usuario: new ObjectID(req.body.usuario),
         enunciado: req.body.enunciado,
         alternativas: req.body.alternativas,
-        categoria: req.body.categoria,
+        categoria: id_categoria,
         correta: req.body.correta,
         pontuacao: req.body.pontuacao,
         dataCriacao: req.body.dataCriacao
