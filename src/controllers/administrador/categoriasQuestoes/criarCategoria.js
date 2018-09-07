@@ -14,11 +14,12 @@ const genericDAO = require('../../../util/genericDAO');
 const utilToken = require('../../../util/token');
 
 exports.cadastrarCategoria = async (req, res) => {
-
+    
 	/* Testa se categoria ja existe no banco */
     let testa_existencia = await Categoria.find({nome: req.body.categoria.toUpperCase()})
-    
+ 
     if(testa_existencia.length == 0) {
+
         let novaCategoria = new Categoria({
             nome: req.body.categoria.toUpperCase()
         });

@@ -10,4 +10,5 @@ module.exports = (application) => {
     application.delete(`${variables.base}/administrador/questoes/deletar`, (req, res) => {controllerDeletarQuestao.deletarQuestao(req, res)});
     application.put(`${variables.base}/administrador/questoes/atualizar`, (req, res) => {controllerAtualizarQuestao.atualizarQuestao(req, res)});
     application.get(`${variables.base}/administrador/questoes`, (req, res) => {controllerGetQuestao.listarQuestoes(req, res)});
+    application.get(`${variables.base}/administrador/questoes/adicionar`, (req, res) => {controllerGetQuestao.listarQuestoes(req, res)});
 };

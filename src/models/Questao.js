@@ -10,7 +10,9 @@ const QuestaoSchema = new Schema({
         ref: 'Usuario'
     },
     enunciado: String,
-    alternativas: [String],
+    alternativas: [{
+        descricao: String
+    }],
     categoria:{
         type: Schema.Types.ObjectId,
         ref: 'Categoria'

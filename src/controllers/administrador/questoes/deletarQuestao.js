@@ -14,7 +14,7 @@ const genericDAO = require('../../../util/genericDAO');
 const utilToken = require('../../../util/token');
 
 exports.deletarQuestao = async (req, res) => {
-    
+    console.log("req body = " + req.body.id);
     let json_delete = {
         _id: new ObjectID(req.body.id)
     }

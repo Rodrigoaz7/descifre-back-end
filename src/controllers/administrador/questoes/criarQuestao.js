@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 const ObjectID = require('mongodb').ObjectID
 const Questao = mongoose.model('Questao');
 const NovaCategoria = require('../categoriasQuestoes/criarCategoria');
+const ListaCategoria = require('../categoriasQuestoes/listaCategoria');
 const Token = mongoose.model('Token');
 const validators = require('../../../index');
 const crypto = require('crypto');
@@ -39,4 +40,13 @@ exports.cadastrarQuestao = async (req, res) => {
 
     /* Retorno com sucesso */
     return res.status(httpCodes.get('Criado')).json({status: true, msg:responses.getValue('questaoCriado')});
+}
+
+exports.getCadastrarQuestao = async (req, res) => {
+    let lista_categorias = await ListaCategoria.listarCategorias(req, res);
+
+    if(lista_categorias.error) return returns.error(res, lista_categorias);
+
+    /* Retorno com sucesso */
+    return res.status(httpCodes.get('Ok')).json({status: true, categorias: lista_categorias});
 }
