@@ -6,7 +6,7 @@ const responses = require('../../../util/responses');
 
 exports.realizarLogout = async (req, res) => {
     const erros = validators.publico.autenticacao.logout.errosLogout(req);
-    console.log(req.body.token)
+    
     const apagarSessao = await utilToken.destruirToken(utilToken.getTokenRequest(req));
     
     if (erros) return res.status(httpCodes.get('NaoAutorizado')).json({status: false, erros: erros});
