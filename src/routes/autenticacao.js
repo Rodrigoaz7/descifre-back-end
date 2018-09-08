@@ -1,6 +1,7 @@
 const controllerCadastro = require('../controllers/publico/autenticacao/cadastro');
 const controllerLogin = require('../controllers/publico/autenticacao/login');
 const controllerLogout = require('../controllers/publico/autenticacao/logout');
+
 const variables = require('../../config/variables');
 
 module.exports = (application) => {
