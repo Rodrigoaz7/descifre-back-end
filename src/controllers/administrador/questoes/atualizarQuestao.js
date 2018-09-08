@@ -13,6 +13,8 @@ const responses = require('../../../util/responses');
 const genericDAO = require('../../../util/genericDAO');
 const utilToken = require('../../../util/token');
 
+const NovaCategoria = require('../categoriasQuestoes/criarCategoria');
+
 exports.atualizarQuestao = async (req, res) => {
     
      /* Get nos erros do formulário */
@@ -23,18 +25,20 @@ exports.atualizarQuestao = async (req, res) => {
     let json_search = {
     	_id: new ObjectID(req.body.id)
     }
+
+    let id_categoria = await NovaCategoria.cadastrarCategoria(req, res);
+
     let json_update = {
     	usuario: new ObjectID(req.body.usuario),
 	    enunciado: req.body.enunciado,
 	    alternativas: req.body.alternativas,
-	    categoria: req.body.categoria,
+	    categoria: id_categoria,
 	    correta: req.body.correta,
 	    pontuacao: req.body.pontuacao,
 	    dataCriacao: req.body.dataCriacao
     }
 
     let atualizarQuestao = await genericDAO.atualizarUmObjeto(Questao, json_search, json_update);
-    
     if(atualizarQuestao.error) return returns.error(res, atualizarQuestao);
 
     /* Retorno com sucesso */
