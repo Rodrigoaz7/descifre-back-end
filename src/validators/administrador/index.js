@@ -1,2 +1,3 @@
 const questoes = require('./questoes');
-module.exports = {questoes};
+const rodadas = require('./rodadas');
+module.exports = {questoes, rodadas};
