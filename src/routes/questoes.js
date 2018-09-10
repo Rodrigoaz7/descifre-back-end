@@ -6,6 +6,7 @@ const permissao = require('../middlewares/permissoes');
 const variables = require('../../config/variables');
 
 module.exports = (application) => {
+	
     application.post(`${variables.base}/administrador/questoes`, permissao.administrador, (req, res) => {controllerCriarQuestao.cadastrarQuestao(req, res)});
 
     application.delete(`${variables.base}/administrador/questoes`, permissao.administrador,(req, res) => {controllerDeletarQuestao.deletarQuestao(req, res)});
