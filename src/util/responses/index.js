@@ -9,6 +9,7 @@ const responses = new Enum({
     "questaoCriado": "Questão criado com sucesso",
     "questaoDeletada": "Questão deletada com sucesso",
     "questaoAtualizada": "Questão atualizada com sucesso",
+    "rodadaDeletada": "Rodada deletada com sucesso",
     "dadosListados": "Dados listados com sucesso",
     "rodadaCriada": "Rodada criada com sucesso.",
     "usuariosListados": "Usuarios Listados com sucesso."
