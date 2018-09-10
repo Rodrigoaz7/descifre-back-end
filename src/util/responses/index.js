@@ -10,6 +10,7 @@ const responses = new Enum({
     "questaoDeletada": "Questão deletada com sucesso",
     "questaoAtualizada": "Questão atualizada com sucesso",
     "dadosListados": "Dados listados com sucesso",
-    "rodadaCriada": "Rodada criada com sucesso."
+    "rodadaCriada": "Rodada criada com sucesso.",
+    "usuariosListados": "Usuarios Listados com sucesso."
 });
 module.exports = responses;
