@@ -26,7 +26,8 @@ const RodadaSchema = new Schema({
     abertoPor:{
         type: Schema.Types.ObjectId,
         ref: 'Usuario'  
-    }
+    },
+    taxa_entrada: Number
 });
 
 mongoose.model('Rodada', RodadaSchema);

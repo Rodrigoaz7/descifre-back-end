@@ -17,10 +17,18 @@ const controllerCategoria = require('../categoriasQuestoes/listaCategoria');
 exports.listarQuestoes = async (req, res) => {
 
 	let lista_categorias = await controllerCategoria.listarCategorias(req, res);
-	
+	let lista_questoes = [];
+
+	if(req.query.categoria){
+		lista_questoes = await Questao.find({categoria: req.query.categoria}).populate('categoria').populate('usuario').exec();
+	}
+	else {
+		lista_questoes = await Questao.find({}).populate('categoria').populate('usuario').exec()
+	}
+
     // Chamando a query diretamente no return para não sobrecarregar memória
     return res.status(httpCodes.get('OK')).json({status: true, 
     	msg:responses.getValue('dadosListados'), 
-    	questoes: await Questao.find({}).populate('categoria').populate('usuario').exec(),
+    	questoes: lista_questoes,
     	categorias: lista_categorias});
 }
