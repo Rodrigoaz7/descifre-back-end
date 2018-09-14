@@ -42,6 +42,7 @@ exports.atualizarUmObjeto = async (obj, data_search, data_set) => {
     try{
         objSave = await obj.update({...data_search}, {...data_set}, {upsert: true});
     }catch(error){
+
         objSave = {
             error: true,
             code: error.code,
