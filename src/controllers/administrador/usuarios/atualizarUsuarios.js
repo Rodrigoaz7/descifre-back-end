@@ -35,7 +35,7 @@ exports.atualizarUsuarios = async (req, res) => {
 
     // Depois atualiza usuario
     let json_search = {
-    	_id: new ObjectID(req.body.usuario)
+    	_id: new ObjectID(req.body.usuario) // Melhor usar id_usuario para referencias de id.
     }
     let json_update = {}
 
@@ -62,6 +62,20 @@ exports.atualizarUsuarios = async (req, res) => {
     console.log(atualizarUsuario);
     if(atualizarUsuario.error) return returns.error(res, atualizarUsuario);
 
+    // Pegando novas informações usuáro
+    const usuario = await Usuario.findOne({_id: new ObjectID(req.body.usuario)}).populate('pessoa').exec();
+    
+    // Apagando token antigo.
+    const apagarSessao = await utilToken.destruirToken(utilToken.getTokenRequest(req));
+
+    //Apagando informações desnecessárias 
+    delete usuario.senha;
+    delete usuario.recuperarSenha;
+
+    // Gerando novo token
+    const token = utilToken.gerarToken({...usuario._doc}, 720);
+    await utilToken.salvarToken(token);
+
     /* Retorno com sucesso */
-    return res.status(httpCodes.get('OK')).json({status: true, msg:responses.getValue('usuariosAtualizada'), status: true, usuario: atualizarUsuario});
+    return res.status(httpCodes.get('OK')).json({status: true, msg:responses.getValue('usuariosAtualizada'), status: true, usuario: atualizarUsuario, userInfor: usuario, token: token});
 };

@@ -33,6 +33,9 @@ exports.realizarLogin = async (req, res) =>{
     if(!buscaUsuario) returns.usuarioInvalido(res);
 
     if(req.body.senha !== buscaUsuario.senha) return returns.usuarioInvalido(res);
+
+    delete buscaUsuario._doc.senha;
+    delete buscaUsuario._doc.recuperarSenha;
     
     const token = utilToken.gerarToken({...buscaUsuario._doc}, 720);
     await utilToken.salvarToken(token);
