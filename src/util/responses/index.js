@@ -13,6 +13,7 @@ const responses = new Enum({
     "dadosListados": "Dados listados com sucesso",
     "rodadaCriada": "Rodada criada com sucesso.",
     "usuariosListados": "Usuarios Listados com sucesso.",
-    "usuariosAtualizada": "Usuário atualizado com sucesso"
+    "usuariosAtualizada": "Usuário atualizado com sucesso",
+    "TransacaoRelizada": "Transação de cifras realizada com sucesso."
 });
 module.exports = responses;

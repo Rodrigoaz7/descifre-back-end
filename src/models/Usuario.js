@@ -23,7 +23,11 @@ const UsuarioSchema = new Schema({
         type: Date,
         default: new Date()
     },
-    dataEdicao: [Date]
+    dataEdicao: [Date],
+    quantidade_cifras: {
+        type: Number,
+        default: 0
+    }
 });
 
 mongoose.model('Usuario', UsuarioSchema);

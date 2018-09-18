@@ -1,3 +1,4 @@
+const ObjectID = require('mongodb').ObjectID;
 const eventEmitter = new (require('events').EventEmitter)();
 
 exports.salvar = async (obj) => {

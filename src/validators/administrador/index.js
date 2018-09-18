@@ -1,4 +1,5 @@
 const questoes = require('./questoes');
 const rodadas = require('./rodadas');
 const perfil = require('./perfil');
-module.exports = {questoes, rodadas, perfil};
+const transacoes = require('./transacoes');
+module.exports = {questoes, rodadas, perfil,transacoes};
