@@ -12,13 +12,49 @@ const httpCodes = require('../../../util/httpCodes');
 const responses = require('../../../util/responses');
 // const genericDAO = require('../../../util/genericDAO');
 const utilToken = require('../../../util/token');
+const matchSorter = require('match-sorter');
 
 exports.listarRodadas = async (req, res) => {
 
-	let lista_rodadas = await Rodada.find({}).populate('jogadores').populate('ganhadores').populate('abertoPor').exec()
+	const {titulo, situacao, data_abertura, data_fechamento} = req.query;
+	let json_search = {};
+
+	if(titulo) {
+		let resultado = await matchSorter(await Rodada.find({}), titulo, {keys: ['titulo']});
+		let titulos = [];
+		for(let i=0; i<resultado.length; i++) {
+			titulos.push(resultado[i].titulo);
+		}
+		json_search.titulo = titulos;
+	}
+
+	if(data_abertura) {
+		let date = new Date(data_abertura);
+		date = new Date(date.getTime() - 3*60*60000);
+		json_search.dataAbertura = {$gt: new Date(date), 
+			$lt:(new Date(new Date(date).getTime() + 1*24*60*60000))};
+	}
+
+	if(data_fechamento) {
+
+		let datef = new Date(data_fechamento);
+		datef = new Date(datef.getTime() - 3*60*60000);
+		json_search.dataFinalizacao = {$gt: new Date(datef), 
+			$lt:(new Date(new Date(datef).getTime() + 1*24*60*60000))};
+	}
+
+	if(situacao){
+		let data_agora = new Date();
+		if(situacao == "Aberto"){
+			json_search.dataFinalizacao = {$gt: (data_agora)}
+		} else {
+			json_search.dataFinalizacao = {$lt: (data_agora)}
+		}
+	}
+
+	let lista_rodadas = await Rodada.find({...json_search}).populate('jogadores').populate('ganhadores').populate('abertoPor').exec()
 	if(lista_rodadas.error) return returns.error(res, lista_rodadas);
     
-    // Chamando a query diretamente no return para não sobrecarregar memória
     return res.status(httpCodes.get('OK')).json({status: true, 
     	msg:responses.getValue('dadosListados'), 
     	rodadas: lista_rodadas});

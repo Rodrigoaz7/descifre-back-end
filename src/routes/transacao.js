@@ -4,6 +4,6 @@ const controllerCadastrarTransacoes = require('../controllers/administrador/tran
 const controllerListarTransacoes = require('../controllers/administrador/transacoes/listarTransacoes');
 
 module.exports = (application) => {
-    application.get(`${variables.base}/administrador/transacoes`, permissao.administrador, (req, res) => {controllerListarTransacoes.listarTransacoes(req, res)});
+    application.get(`${variables.base}/administrador/transacoes/:token/:limite`, permissao.administrador, (req, res) => {controllerListarTransacoes.listarTransacoes(req, res)});
     application.post(`${variables.base}/administrador/transacoes`, permissao.administrador, (req, res) => {controllerCadastrarTransacoes.cadastrarTransacao(req, res)});
 };
