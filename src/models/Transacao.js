@@ -6,7 +6,10 @@ const Schema = mongoose.Schema;
 
 const TransacaoSchema = new Schema({
     quantia_transferida: Number,
-    data_transferencia: Date,
+    data_transferencia: {
+        type: Date,
+        default: new Date()
+    },
     enviado_por: {
         type: Schema.Types.ObjectId,
         ref: 'Usuario'
