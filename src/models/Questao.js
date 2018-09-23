@@ -18,6 +18,7 @@ const QuestaoSchema = new Schema({
         ref: 'Categoria'
     },
     correta: Number,
+    corretaTexto: String,
     pontuacao: Number,
     dataCriacao: Date
 });
