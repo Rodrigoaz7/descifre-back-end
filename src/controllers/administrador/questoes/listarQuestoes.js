@@ -2,11 +2,7 @@
     Autor: Rodrigo Azevedo
 */
 const mongoose = require('mongoose');
-// const ObjectID = require('mongodb').ObjectID
 const Questao = mongoose.model('Questao');
-const Token = mongoose.model('Token');
-const validators = require('../../../index');
-// const crypto = require('crypto');
 const returns = require('../../../util/returns');
 const httpCodes = require('../../../util/httpCodes');
 const responses = require('../../../util/responses');
@@ -20,10 +16,10 @@ exports.listarQuestoes = async (req, res) => {
 	let lista_questoes = [];
 
 	if(req.query.categoria){
-		lista_questoes = await Questao.find({categoria: req.query.categoria}).populate('categoria').populate('usuario').exec();
+		lista_questoes = await Questao.find({categoria: req.query.categoria}).populate('categoria').populate('usuario').limit(30).exec();
 	}
 	else {
-		lista_questoes = await Questao.find({}).populate('categoria').populate('usuario').exec()
+		lista_questoes = await Questao.find({}).populate('categoria').populate('usuario').limit(30).exec()
 	}
 
     // Chamando a query diretamente no return para não sobrecarregar memória

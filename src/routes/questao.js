@@ -2,6 +2,7 @@ const controllerCriarQuestao = require('../controllers/administrador/questoes/cr
 const controllerDeletarQuestao = require('../controllers/administrador/questoes/deletarQuestao');
 const controllerAtualizarQuestao = require('../controllers/administrador/questoes/atualizarQuestao');
 const controllerGetQuestao = require('../controllers/administrador/questoes/listarQuestoes');
+const controllerObterCategorias = require('../controllers/administrador/categoriasQuestoes/obterCategorias');
 const permissao = require('../middlewares/permissoes');
 const variables = require('../../config/variables');
 
@@ -15,4 +16,6 @@ module.exports = (application) => {
 
     application.get(`${variables.base}/administrador/questoes/:token`, permissao.administrador, (req, res) => {controllerGetQuestao.listarQuestoes(req, res)});
 
+    application.get(`${variables.base}/administrador/questoes/categoria/:token`, permissao.administrador, (req, res) => {controllerObterCategorias.listar(req, res);});
+    
 };
