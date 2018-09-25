@@ -57,4 +57,9 @@ typings/
 # dotenv environment variables file
 .env
 
+# pasta uploads
+uploads/
+uploads/*
+src/uploads/*
+
 package-lock.json
