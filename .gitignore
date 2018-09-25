@@ -60,6 +60,6 @@ typings/
 # pasta uploads
 uploads/
 uploads/*
-src/uploads/*
-
+./src/uploads/*
+./src/uploads/patrocinadores/*
 package-lock.json
