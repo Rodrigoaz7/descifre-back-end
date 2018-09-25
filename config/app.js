@@ -7,6 +7,9 @@ const consign = require('consign');
 /* importar o módulo do body-parser */
 const bodyParser = require('body-parser');
 
+/* Importar o módulo do express-fileupload. */
+const fileUpload = require('express-fileupload');
+
 /* importar o módulo do express-validator */
 const expressValidator = require('express-validator');
 
@@ -27,6 +30,12 @@ const eventEmitter = new (require('events').EventEmitter)();
 
 /* configurar o middleware express.static */
 app.use(express.static('./public'));
+
+/*Configurando o fileUpload*/
+app.use(fileUpload({
+    limits: { fileSize: 15 * 1024 * 1024 },
+    safeFileNames: true, preserveExtension: true
+}));
 
 /* configurar o middleware body-parser */
 app.use(bodyParser.urlencoded({extended: true}));

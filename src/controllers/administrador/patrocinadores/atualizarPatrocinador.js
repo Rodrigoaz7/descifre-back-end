@@ -24,12 +24,18 @@ exports.atualizarPatrocinador = async (req, res) => {
     }
 
     let json_update = {
-    	
+    	nome: req.body.nome,
+        email: req.body.email,
+        telefone: req.body.telefone,
+        logomarca: req.body.logomarca,
+        rodadas_patrocinadas: req.body.rodadas_patrocinadas,
+        tipo_patrocinador: req.body.tipo_patrocinador,
+        quantia_paga: req.body.quantia_paga
     }
 
     let atualizarPatrocinador = await genericDAO.atualizarUmObjeto(Patrocinador, json_search, json_update);
     if(atualizarPatrocinador.error) return returns.error(res, atualizarPatrocinador);
 
     /* Retorno com sucesso */
-    return res.status(httpCodes.get('OK')).json({status: true, msg:responses.getValue('questaoAtualizada'), msg: atualizarQuestao});
+    return res.status(httpCodes.get('Criado')).json({status: true, msg: atualizarPatrocinador});
 }

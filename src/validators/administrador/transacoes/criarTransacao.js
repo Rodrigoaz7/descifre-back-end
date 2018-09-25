@@ -13,9 +13,6 @@ exports.errosCadastro = async (req) => {
     if(req.body.quantia_transferida === undefined || req.body.quantia_transferida === ""){
     	erros.push({msg: "A quantia precisa ser informada. "});
     }
-    if(req.body.data_transferencia === undefined || req.body.data_transferencia === ""){
-    	erros.push({msg: "A data de transferência precisa ser informada. "});
-    }
     if(req.body.tipo !== "compra" && req.body.tipo !== "saque" && req.body.tipo !== "transferencia"){
         erros.push({msg: "Tipo precisa ser de compra, saque ou tranferencia. "});
     }
