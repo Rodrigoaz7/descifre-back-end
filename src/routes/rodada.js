@@ -4,7 +4,7 @@ const controllerCriarRodada = require('../controllers/administrador/rodadas/cria
 const controllerRemoverRodada = require('../controllers/administrador/rodadas/deletarRodada');
 const controllerRodadas = require('../controllers/administrador/rodadas/listarRodadas');
 const controllerAtualizarRodadas = require('../controllers/administrador/rodadas/atualizarRodadas');
-
+const controllerRodadasAbertas = require('../controllers/usuario/rodadas/controlladorRodadasAbertas');
 module.exports = (application) => {
     /* Administrador */
     application.post(`${variables.base}/administrador/rodadas`, permissao.administrador, (req, res) => {controllerCriarRodada.cadastrarRodada(req, res)});
@@ -13,7 +13,6 @@ module.exports = (application) => {
     application.put(`${variables.base}/administrador/rodadas`, permissao.administrador, (req, res) => {controllerAtualizarRodadas.atualizarRodada(req, res)});
 
     /* Administrador */
-
-    application.get(`${variables.base}/usuario/rodadas/abertas/:token`, permissao.usuario, (req, res) => {});
+    application.get(`${variables.base}/usuario/rodadas/abertas/:token`, permissao.usuario, (req, res) => {controllerRodadasAbertas.obterRodadasAbertas(req, res)});
 
 };

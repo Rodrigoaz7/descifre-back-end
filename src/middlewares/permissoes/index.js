@@ -13,13 +13,11 @@ const funcaoPermissao = (res, next, permissaoUser, token) =>{
     Token.findOne({token:token}, (err, data) => {  
         const _token = data;
         if(!_token) return res.status(401).json({status:false, renovarToken:false, tokenValido:false, msg: "Token inválido."});
-
         jwt.verify(token, secret, (err, decoded)=>{
             const dataToken = decoded;
             const time = new Date().getTime();
-
+            
             if(time>(dataToken.exp*1000)) return res.status(401).json({status: false, renovarToken:true, tokenValido: false, msg: "Você precisa renovar seu token."});
-
             let permissaoEntrar = false;
             dataToken.permissoes.map((permissao, index) =>{
                 if(permissao===permissaoUser) permissaoEntrar = true;
