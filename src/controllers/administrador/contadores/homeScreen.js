@@ -13,7 +13,7 @@ exports.contadorHomeScreen = async (req, res) =>{
     // Seto as horas/minutos/segundos/ms em zero
     date_today.setHours(0,0,0,0);
     // Resolvendo problema das tres horas a mais
-    date_today = new Date(date_today.getTime() - 3*60*60000);
+    // date_today = new Date(date_today.getTime() - 3*60*60000);
     // Capturo dia da semana
     let day = date_today.getDay();
     /*
@@ -27,7 +27,7 @@ exports.contadorHomeScreen = async (req, res) =>{
     */
     // Capturo data do primeiro dia da semana, no caso, domingo
     let data_iterator = date_today;
-    if(day > 0) data_iterator = new Date(date_today.getTime() - 1*(parseInt(day)+1)*24*60*60000);
+    if(day > 0) data_iterator = new Date(date_today.getTime() - 1*parseInt(day)*24*60*60000);
 
     var contadorUsuariosSemana = [];
     var contadorCifrasSemana = [];

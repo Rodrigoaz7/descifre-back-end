@@ -11,20 +11,37 @@ const httpCodes = require('../../../util/httpCodes');
 const responses = require('../../../util/responses');
 const genericDAO = require('../../../util/genericDAO');
 const tokenUtil = require('../../../util/token');
+const imagem_util = require('../../../util/handler_imagens/index');
 
 exports.cadastrarPatrocinador = async (req, res) => {
 	/* Get nos erros do formulário */
     const erros = validators.administrador.patrocinadores.criarPatrocinador.errosCadastro(req);
     if (erros) return res.status(httpCodes.getValue('ReqInvalida')).json({status:false, erros:erros});
-    
-    //let informacaoDecodificada = await tokenUtil.decoded(tokenUtil.getTokenRequest(req));
-    //req.body.abertoPor = informacaoDecodificada._id;
 
     let novoPatrocinador = new Patrocinador(req.body);
-    let salvarPatrocinador = await genericDAO.salvar(novoPatrocinador);
 
+    // capturando urls para criacao de diretorio de nova imagem
+    var url_imagem = './src/uploads/patrocinadores/'+novoPatrocinador._id+'/'+req.files.logomarca.name; 
+    var url_destino = './src/uploads/patrocinadores/'+novoPatrocinador._id;
+
+    let extensao_arquivo = await imagem_util.getExt(req.files.logomarca);
+    if(extensao_arquivo !== ".jpg" && extensao_arquivo !== ".png" && extensao_arquivo !== ".jpeg"){
+        return res.status(500).json({status: false, msg: "Extensão inválida de imagem." });
+    }
+
+    imagem_util.createDir(url_destino, (statusDir, erroDir) => {
+        if (erroDir) return res.status(500).json({status: false, msg: "Problema ao criar diretorio, tente novamente." });
+    });
+
+    imagem_util.saveFile(req.files.logomarca, url_imagem, (statusFile, erroFile) => {
+        // Ao dar um res.send, um erro interno do node e disparado !!!
+        if (erroFile) return console.log("ERRO")
+        novoPatrocinador.logomarca = url_imagem;
+    });
+
+    let salvarPatrocinador = await genericDAO.salvar(novoPatrocinador);
     if(salvarPatrocinador.error) return returns.error(res, salvarPatrocinador);
 
     /* Retorno com sucesso */
-    return res.status(httpCodes.get('Criado')).json({status: true, msg:responses.getValue('rodadaCriada')});
+    return res.status(httpCodes.get('Criado')).json({status: true, msg:salvarPatrocinador});
 };
