@@ -11,7 +11,7 @@ const httpCodes = require('../../../util/httpCodes');
 const responses = require('../../../util/responses');
 const genericDAO = require('../../../util/genericDAO');
 const tokenUtil = require('../../../util/token');
-const imagem_util = require('../../../util/handler_imagens/index');
+const imagemUtil = require('../../../util/handler_imagens/index');
 
 exports.cadastrarPatrocinador = async (req, res) => {
 	/* Get nos erros do formulário */
@@ -24,24 +24,25 @@ exports.cadastrarPatrocinador = async (req, res) => {
     var url_imagem = './src/uploads/patrocinadores/'+novoPatrocinador._id+'/'+req.files.logomarca.name; 
     var url_destino = './src/uploads/patrocinadores/'+novoPatrocinador._id;
 
-    let extensao_arquivo = await imagem_util.getExt(req.files.logomarca);
+    let extensao_arquivo = await imagemUtil.getExt(req.files.logomarca);
     if(extensao_arquivo !== ".jpg" && extensao_arquivo !== ".png" && extensao_arquivo !== ".jpeg"){
         return res.status(500).json({status: false, msg: "Extensão inválida de imagem." });
     }
 
-    imagem_util.createDir(url_destino, (statusDir, erroDir) => {
-        if (erroDir) return res.status(500).json({status: false, msg: "Problema ao criar diretorio, tente novamente." });
-    });
-
-    imagem_util.saveFile(req.files.logomarca, url_imagem, (statusFile, erroFile) => {
-        // Ao dar um res.send, um erro interno do node e disparado !!!
-        if (erroFile) return console.log("ERRO")
-        novoPatrocinador.logomarca = url_imagem;
-    });
-
     let salvarPatrocinador = await genericDAO.salvar(novoPatrocinador);
+            
     if(salvarPatrocinador.error) return returns.error(res, salvarPatrocinador);
+    
+    imagemUtil.createDir(url_destino, (statusDir, erroDir) => {
+        if (erroDir) return res.status(500).json({status: false, msg: "Problema ao criar diretorio, tente novamente." });
+        imagemUtil.saveFile(req.files.logomarca, url_imagem, (statusFile, erroFile) => {
+            // Ao dar um res.send, um erro interno do node e disparado !!!
+            if (erroFile) return console.log("ERRO");
 
-    /* Retorno com sucesso */
-    return res.status(httpCodes.get('Criado')).json({status: true, msg:salvarPatrocinador});
+            novoPatrocinador.logomarca = url_imagem;
+
+            /* Retorno com sucesso */
+            return res.status(httpCodes.get('Criado')).json({status: true, msg:salvarPatrocinador});
+        });
+    });
 };
