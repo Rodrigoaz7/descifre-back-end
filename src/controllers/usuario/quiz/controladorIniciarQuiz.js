@@ -8,12 +8,9 @@ const Usuario = mongoose.model('Usuario');
 const Rodada = mongoose.model('Rodada');
 const Quiz = mongoose.model('Quiz');
 
-const validators = require('../../../index');
-const returns = require('../../../util/returns');
+
 const httpCodes = require('../../../util/httpCodes');
-const responses = require('../../../util/responses');
-const genericDAO = require('../../../util/genericDAO');
-const utilToken = require('../../../util/token');
+
 
 exports.iniciarQuiz = async (req, res) => {
     // Salvando em variaveis o id do usuario e rodada.
@@ -25,19 +22,21 @@ exports.iniciarQuiz = async (req, res) => {
     let buscaUsuario = await Usuario.findOne({_id: new ObjectID(idUsuario)});
 
     // Verificação se existe os ids passados.
-    if(!buscaRodada || !buscaUsuario) return res.status(httpCodes.getValue('NaoAutorizado')).json({status:false, erros:[{msg:"Não foi possível iniciar a rodada, usuário ou rodada inválidas"}]});
+    if(!buscaRodada || !buscaUsuario) return res.status(httpCodes.getValue('NaoAutorizado')).json({status:false, msg:"Não foi possível iniciar a rodada, usuário ou rodada inválidas"});
 
     // Verificar se existe um quiz associado a rodada e ao usuário.
 
     let buscaQuiz = await Quiz.findOne({idUsuario: idUsuario, idRodada: idRodada});
     
     let dataAbertura = new Date();
-
-    if(buscaQuiz!==undefined){
+    
+    if(buscaQuiz!==null){
+        let dataAberturaQuiz = new Date(buscaQuiz.dataAbertura);
         const dataFinalizacaoQuiz = new Date(buscaQuiz.dataFinalizacao);
-        let dataJogada = new Date(dataAbertura.getTime()+parseInt(buscaRodada.duracao)*60000);
-        if(dataJogada.getTime()>dataFinalizacaoQuiz.getTime()) return res.status(httpCodes.getValue('NaoAutorizado')).json({status:false, erros:[{msg:"Você já jogou esse quiz e o tempo foi esgotado."}]});
-        else if(dataJogada.getTime()<dataFinalizacaoQuiz.getTime()) return res.status(httpCodes.getValue('OK')).json({status: true, idQuiz: buscaQuiz[0]._id, msg: "Você pode continuar a jogar o quiz."});
+        let dataJogada = new Date(dataAberturaQuiz.getTime()+parseInt(buscaRodada.duracao)*60000);
+
+        if(dataAbertura.getTime() > dataFinalizacaoQuiz.getTime() || dataAbertura.getTime()>dataJogada.getTime()) return res.status(httpCodes.getValue('NaoAutorizado')).json({status:false, msg:"Você já jogou esse quiz e o tempo foi esgotado."});
+        else if(dataAbertura.getTime()<dataFinalizacaoQuiz.getTime() && dataAbertura.getTime()<dataJogada.getTime()) return res.status(httpCodes.getValue('OK')).json({status: true, idQuiz: buscaQuiz._id, msg: "Você pode continuar a jogar o quiz."});
     }
     // Nenhum quiz encontrado.
     
