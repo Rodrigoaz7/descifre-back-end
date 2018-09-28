@@ -1,5 +1,6 @@
 const mkdirp = require('mkdirp');
 const path = require('path');
+const fs = require('fs');
 
 exports.saveFile = async (file,urlArquivo,cb) => {
     if(file==="") return false;
@@ -19,3 +20,4 @@ exports.createDir = async (url, cb) => {
 exports.getExt = async (file) => {
     return path.extname(file.name);
 };
+

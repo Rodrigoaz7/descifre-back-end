@@ -27,7 +27,8 @@ const UsuarioSchema = new Schema({
     quantidade_cifras: {
         type: Number,
         default: 0
-    }
+    },
+    foto: String
 });
 
 mongoose.model('Usuario', UsuarioSchema);

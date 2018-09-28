@@ -59,7 +59,6 @@ exports.atualizarUsuarios = async (req, res) => {
     }
 
     let atualizarUsuario = await genericDAO.atualizarUmObjeto(Usuario, json_search, json_update);
-    console.log(atualizarUsuario);
     if(atualizarUsuario.error) return returns.error(res, atualizarUsuario);
 
     // Pegando novas informações usuáro
@@ -75,6 +74,28 @@ exports.atualizarUsuarios = async (req, res) => {
     // Gerando novo token
     const token = utilToken.gerarToken({...usuario._doc}, 720);
     await utilToken.salvarToken(token);
+
+    // // capturando urls para criacao de diretorio de nova imagem
+    // var url_imagem = './src/uploads/usuarios/'+usuario._id+'/'+req.files.foto.name; 
+    // var url_destino = './src/uploads/usuarios/'+usuario._id;
+
+    // let extensao_arquivo = await imagemUtil.getExt(req.files.foto);
+    // if(extensao_arquivo !== ".jpg" && extensao_arquivo !== ".png" && extensao_arquivo !== ".jpeg"){
+    //     return res.status(500).json({status: false, msg: "Extensão inválida de imagem." });
+    // }
+    
+    // imagemUtil.createDir(url_destino, (statusDir, erroDir) => {
+    //     if (erroDir) return res.status(500).json({status: false, msg: "Problema ao criar diretorio, tente novamente." });
+    //     imagemUtil.saveFile(req.files.foto, url_imagem, (statusFile, erroFile) => {
+    //         // Ao dar um res.send, um erro interno do node e disparado !!!
+    //         if (erroFile) return console.log("ERRO");
+
+    //         novoPatrocinador.foto = url_imagem;
+
+    //         /* Retorno com sucesso */
+    //         return res.status(httpCodes.get('Criado')).json({status: true, msg:salvarPatrocinador});
+    //     });
+    // });
 
     /* Retorno com sucesso */
     return res.status(httpCodes.get('OK')).json({status: true, msg:responses.getValue('usuariosAtualizada'), status: true, usuario: atualizarUsuario, userInfor: usuario, token: token});

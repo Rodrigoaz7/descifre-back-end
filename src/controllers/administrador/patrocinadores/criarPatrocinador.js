@@ -12,6 +12,7 @@ const responses = require('../../../util/responses');
 const genericDAO = require('../../../util/genericDAO');
 const tokenUtil = require('../../../util/token');
 const imagemUtil = require('../../../util/handler_imagens/index');
+const path = require('path');
 
 exports.cadastrarPatrocinador = async (req, res) => {
 	/* Get nos erros do formulário */
@@ -21,28 +22,26 @@ exports.cadastrarPatrocinador = async (req, res) => {
     let novoPatrocinador = new Patrocinador(req.body);
 
     // capturando urls para criacao de diretorio de nova imagem
-    var url_imagem = './src/uploads/patrocinadores/'+novoPatrocinador._id+'/'+req.files.logomarca.name; 
-    var url_destino = './src/uploads/patrocinadores/'+novoPatrocinador._id;
+    var url_imagem = path.join(__dirname + '/../../../uploads/patrocinadores/'+novoPatrocinador._id+'/'+req.files.logomarca.name); 
+    var url_destino = path.join(__dirname + '/../../../uploads/patrocinadores/'+novoPatrocinador._id);
 
     let extensao_arquivo = await imagemUtil.getExt(req.files.logomarca);
     if(extensao_arquivo !== ".jpg" && extensao_arquivo !== ".png" && extensao_arquivo !== ".jpeg"){
         return res.status(500).json({status: false, msg: "Extensão inválida de imagem." });
     }
-
-    let salvarPatrocinador = await genericDAO.salvar(novoPatrocinador);
-            
-    if(salvarPatrocinador.error) return returns.error(res, salvarPatrocinador);
     
+    novoPatrocinador.logomarca = url_imagem;
+    let salvarPatrocinador = genericDAO.salvar(novoPatrocinador);
+    if(salvarPatrocinador.error) return returns.error(res, salvarPatrocinador);
+
     imagemUtil.createDir(url_destino, (statusDir, erroDir) => {
         if (erroDir) return res.status(500).json({status: false, msg: "Problema ao criar diretorio, tente novamente." });
         imagemUtil.saveFile(req.files.logomarca, url_imagem, (statusFile, erroFile) => {
             // Ao dar um res.send, um erro interno do node e disparado !!!
             if (erroFile) return console.log("ERRO");
-
-            novoPatrocinador.logomarca = url_imagem;
-
-            /* Retorno com sucesso */
-            return res.status(httpCodes.get('Criado')).json({status: true, msg:salvarPatrocinador});
         });
     });
+
+    /* Retorno com sucesso */
+    return res.status(httpCodes.get('Criado')).json({status: true, msg:salvarPatrocinador});
 };
