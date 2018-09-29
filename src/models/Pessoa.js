@@ -13,7 +13,8 @@ const PessoaSchema = new Schema({
     telefone: String,
     conta: String,
     agencia: String,
-    sexo: String
+    sexo: String,
+    foto: String
 });
 
 mongoose.model('Pessoa', PessoaSchema);

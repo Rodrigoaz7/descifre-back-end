@@ -1,7 +1,7 @@
 exports.errosCadastro = (req) => {
     /* Verificando se todos os campos estão preenchidos */
-    req.assert('usuario', 'Um usuário deve cadastar a questao').notEmpty();
-    req.assert('pessoa', 'Uma pessoa não pode ser vazio').notEmpty();
+    req.assert('idUsuario', 'Um usuário deve cadastar a questao').notEmpty();
+    req.assert('idPessoa', 'Uma pessoa não pode ser vazio').notEmpty();
     
     /* Verificando se todos os campos estão preenchidos */
     req.assert('nome', 'O seu nome não pode ser vazio').notEmpty();

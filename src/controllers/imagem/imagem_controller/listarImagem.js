@@ -4,7 +4,7 @@
 const mongoose = require('mongoose');
 const ObjectID = require('mongodb').ObjectID
 const Token = mongoose.model('Token');
-const Usuario = mongoose.model('Usuario');
+const Pessoa = mongoose.model('Pessoa');
 const Patrocinador = mongoose.model('Patrocinador');
 const validators = require('../../../index');
 const returns = require('../../../util/returns');
@@ -25,7 +25,7 @@ exports.listarImagem = async (req, res) => {
 			resultado = patrocinador.logomarca;
 		}
 		else if(req.query.tipo === "usuario"){
-			let user = await Usuario.findOne({_id: new ObjectID(req.query.id)});
+			let user = await Pessoa.findOne({_id: new ObjectID(req.query.id)});
 			if(user === null) return res.status(httpCodes.get('NotFound')).json({status: false, msg:"Usuario com esse id não existe."});
 			resultado = user.foto;
 		}
