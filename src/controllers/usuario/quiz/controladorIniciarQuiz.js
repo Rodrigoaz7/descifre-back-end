@@ -10,7 +10,7 @@ const Quiz = mongoose.model('Quiz');
 
 
 const httpCodes = require('../../../util/httpCodes');
-
+const utilRealizaCompra = require('../../../util/transacoes/realizarCompra');
 
 exports.iniciarQuiz = async (req, res) => {
     // Salvando em variaveis o id do usuario e rodada.
@@ -40,6 +40,12 @@ exports.iniciarQuiz = async (req, res) => {
     }
     // Nenhum quiz encontrado.
     
+    let realizarCompra = await utilRealizaCompra.realizarCompra(buscaUsuario._id, buscaRodada.taxa_entrada);
+
+    if(!realizarCompra) return res.status(httpCodes.getValue('NaoAutorizado')).json({status: true, msg: "Você não possuí cifras suficientes para entrar na rodada, realize uma recarga :)."});
+
+    // Verificar se o usuário tem saldo.
+    // Se tiver realizar transação de compra do quiz.
     
     const dataFinalizacao = new Date(dataAbertura.getTime()+parseInt(buscaRodada.duracao)*60000);
 

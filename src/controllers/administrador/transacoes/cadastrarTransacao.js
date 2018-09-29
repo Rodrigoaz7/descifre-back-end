@@ -27,7 +27,7 @@ exports.cadastrarTransacao = async (req, res) => {
     let json_set = {};
     const user_enviatario = await Usuario.findOne({_id: new ObjectID(req.body.id_enviado_por)});
     const user_receptario = await Usuario.findOne({_id: new ObjectID(req.body.id_recebido_por)});
-    console.log(user_receptario)
+    
     // Funcoes de transferencias para cada tipo de transacao
     if(req.body.tipo === "transferencia"){
 
