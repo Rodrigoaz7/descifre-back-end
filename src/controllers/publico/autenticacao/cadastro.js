@@ -12,6 +12,7 @@ const httpCodes = require('../../../util/httpCodes');
 const responses = require('../../../util/responses');
 const genericDAO = require('../../../util/genericDAO');
 const utilToken = require('../../../util/token');
+const ObjectID = require('mongodb').ObjectID;
 
 exports.realizarCadastro = async (req, res) => {
 
@@ -62,6 +63,8 @@ exports.realizarCadastro = async (req, res) => {
         email: salvarPessoa.email,
         permissoes: salvarUsuario.permissoes
     };
+    
+    const usuarioBusca = await Usuario.findOne({_id: new ObjectID(salvarUsuario._id)}).populate('pessoa').exec();
 
     const token = utilToken.gerarToken(usuarioToken, 360);
     
@@ -72,5 +75,5 @@ exports.realizarCadastro = async (req, res) => {
     if(salvarToken.error) returns.returnError(res, salvarToken);
 
     /* Retorno com sucesso */
-    return res.status(httpCodes.get('OK')).json({status: true, msg:responses.getValue('usuarioCriado'), token: token, usuario: usuarioToken});
+    return res.status(httpCodes.get('OK')).json({status: true, msg:responses.getValue('usuarioCriado'), token: token, usuario: usuarioBusca});
 };

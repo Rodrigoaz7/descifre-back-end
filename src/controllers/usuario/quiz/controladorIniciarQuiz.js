@@ -19,8 +19,8 @@ exports.iniciarQuiz = async (req, res) => {
 
     // Buscando no banco o usuário e a rodada.
     let buscaRodada = await Rodada.findOne({_id: new ObjectID(idRodada)});
-    let buscaUsuario = await Usuario.findOne({_id: new ObjectID(idUsuario)});
-
+    let buscaUsuario = await Usuario.findOne({_id: new ObjectID(idUsuario)}).populate('pessoa').exec();
+    
     // Verificação se existe os ids passados.
     if(!buscaRodada || !buscaUsuario) return res.status(httpCodes.getValue('NaoAutorizado')).json({status:false, msg:"Não foi possível iniciar a rodada, usuário ou rodada inválidas"});
 
@@ -35,14 +35,16 @@ exports.iniciarQuiz = async (req, res) => {
         const dataFinalizacaoQuiz = new Date(buscaQuiz.dataFinalizacao);
         let dataJogada = new Date(dataAberturaQuiz.getTime()+parseInt(buscaRodada.duracao)*60000);
 
-        if(dataAbertura.getTime() > dataFinalizacaoQuiz.getTime() || dataAbertura.getTime()>dataJogada.getTime()) return res.status(httpCodes.getValue('NaoAutorizado')).json({status:false, msg:"Você já jogou esse quiz e o tempo foi esgotado."});
-        else if(dataAbertura.getTime()<dataFinalizacaoQuiz.getTime() && dataAbertura.getTime()<dataJogada.getTime()) return res.status(httpCodes.getValue('OK')).json({status: true, idQuiz: buscaQuiz._id, msg: "Você pode continuar a jogar o quiz."});
+        
+        if(dataAbertura.getTime()<dataFinalizacaoQuiz.getTime() && dataAbertura.getTime()<dataJogada.getTime()) return res.status(httpCodes.getValue('OK')).json({status: true,resultados:false, idQuiz: buscaQuiz._id, msg: "Você pode continuar a jogar o quiz."});
+        else if(buscaQuiz.jogadas.length>0) return res.status(httpCodes.getValue('OK')).json({status: true, resultados:true, quiz: buscaQuiz});
+        else if(dataAbertura.getTime() > dataFinalizacaoQuiz.getTime() || dataAbertura.getTime()>dataJogada.getTime()) return res.status(httpCodes.getValue('NaoAutorizado')).json({status:false,resultados:false, msg:"Você já jogou esse quiz e o tempo foi esgotado."});
     }
     // Nenhum quiz encontrado.
     
     let realizarCompra = await utilRealizaCompra.realizarCompra(buscaUsuario._id, buscaRodada.taxa_entrada);
 
-    if(!realizarCompra) return res.status(httpCodes.getValue('NaoAutorizado')).json({status: true, msg: "Você não possuí cifras suficientes para entrar na rodada, realize uma recarga :)."});
+    if(!realizarCompra) return res.status(httpCodes.getValue('NaoAutorizado')).json({status: true, resultados:false, msg: "Você não possuí cifras suficientes para entrar na rodada, realize uma recarga :)."});
 
     // Verificar se o usuário tem saldo.
     // Se tiver realizar transação de compra do quiz.
@@ -52,6 +54,7 @@ exports.iniciarQuiz = async (req, res) => {
     const novoQuiz = new Quiz({
         idUsuario: buscaUsuario._id,
         idRodada:buscaRodada._id,
+        nomeUsuario: buscaUsuario.pessoa.nome,
         pontuacao: 0,
         jogadas:[],
         dataAbertura: dataAbertura,
@@ -60,7 +63,7 @@ exports.iniciarQuiz = async (req, res) => {
 
     await novoQuiz.save();
 
-    return res.status(httpCodes.getValue('OK')).json({status: true, idQuiz: novoQuiz._id, msg: "Você pode iniciar o quiz."});
+    return res.status(httpCodes.getValue('OK')).json({status: true, resultados:false, idQuiz: novoQuiz._id, msg: "Você pode iniciar o quiz."});
 
 
 }

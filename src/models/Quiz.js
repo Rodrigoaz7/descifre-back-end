@@ -9,6 +9,7 @@ const QuizSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Usuario'
     },
+    nomeUsuario: String,
     idRodada:{
         type: Schema.Types.ObjectId,
         ref: 'Rodada'
