@@ -63,7 +63,7 @@ exports.iniciarQuiz = async (req, res) => {
 
     await novoQuiz.save();
 
-    return res.status(httpCodes.getValue('OK')).json({status: true, resultados:false, idQuiz: novoQuiz._id, msg: "Você pode iniciar o quiz."});
+    return res.status(httpCodes.getValue('OK')).json({status: true, resultados:false, idQuiz: novoQuiz._id, msg: "Você pode iniciar o quiz.", valorTransacao:buscaRodada.taxa_entrada});
 
 
 }
