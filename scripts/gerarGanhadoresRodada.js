@@ -31,8 +31,9 @@ const gerarGanhadores = (rodada) =>{
     return ganhadores;
 }
 exports.agendarGanhadores = async () =>{
+    const dataAtual = new Date();
     // Buscando rodadas.
-    const rodadas = await Rodada.find({}).populate('jogadores.quiz').exec();
+    const rodadas = await Rodada.find({dataFinalizacao:{$gt:dataAtual}}).populate('jogadores.quiz').exec();
     // Percorrendo rodadas
     rodadas.map((rodada, index) =>{
         // Criando data de finalização
