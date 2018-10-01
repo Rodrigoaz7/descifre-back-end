@@ -3,8 +3,8 @@ const ObjectID = require('mongodb').ObjectID
 const Rodada = mongoose.model('Rodada');
 const Usuario = mongoose.model('Usuario');
 const Transacao = mongoose.model('Transacao');
-
 const schedule = require('node-schedule');
+
 const gerarGanhadores = (rodada) =>{
     let jogadoresSort = rodada.jogadores.sort((a, b) => parseFloat(a.quiz.pontuacao) - parseFloat(b.quiz.pontuacao));
     let ganhadores = [];
