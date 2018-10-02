@@ -13,10 +13,12 @@ const returns = require('../../../util/returns');
 const genericDAO = require('../../../util/genericDAO');
 const utilToken = require('../../../util/token');
 const imagemUtil = require('../../../util/handler_imagens/index');
-const path = require('path')
+const path = require('path');
+const fs = require('fs');
 
 
 exports.atualizarUsuarios = async (req, res) => {
+    console.log(req.body)
 	/* Get nos erros do formulário */
     const erros = validators.administrador.perfil.atualizaPerfil.errosCadastro(req);
     if (erros) return res.status(httpCodes.getValue('NaoAutorizado')).json({status:false, erros:erros});
@@ -25,12 +27,10 @@ exports.atualizarUsuarios = async (req, res) => {
     var url_destino = "";
 
     // Atualizando os dados de uma pessoa, primeiramente.
-    let json_search_pessoa = {
-    	_id: new ObjectID(req.body.idPessoa)
-    }
-
+    let json_search_pessoa = { _id: new ObjectID(req.body.idPessoa)}
     let json_update_pessoa = {}
 
+    // Se for passado uma nova imagem, devemos salva-la no banco
     if(req.files){
         url_imagem = path.join(__dirname + '/../../../uploads/usuarios/'+req.body.idUsuario+'/'+req.files.foto.name);
         url_destino = path.join(__dirname + '/../../../uploads/usuarios/'+req.body.idUsuario);
@@ -49,6 +49,13 @@ exports.atualizarUsuarios = async (req, res) => {
             agencia: req.body.agencia,
             foto: url_imagem
         }
+        
+        //Remove imagem guaradada anteriormente
+        let user_imagem = await Pessoa.findOne({_id: new ObjectID(req.body.idPessoa)});
+        if(user_imagem.foto){
+            fs.unlinkSync(user_imagem.foto);
+        }
+
     } else {
         json_update_pessoa = {
             nome: req.body.nome,
@@ -63,6 +70,7 @@ exports.atualizarUsuarios = async (req, res) => {
     let atualizarPessoa = await genericDAO.atualizarUmObjeto(Pessoa, json_search_pessoa, json_update_pessoa);
     if(atualizarPessoa.error) return returns.error(res, atualizarPessoa);
 
+    // Se uma imagem tiver sido cadastrada, devemos armazena-la no bd
     if(url_destino !== "" && url_imagem !== ""){
         imagemUtil.createDir(url_destino, (statusDir, erroDir) => {
             if (erroDir) return res.status(500).json({status: false, msg: "Problema ao criar diretorio, tente novamente." });
@@ -74,13 +82,11 @@ exports.atualizarUsuarios = async (req, res) => {
     }
 
     // Depois atualiza usuario
-    let json_search = {
-    	_id: new ObjectID(req.body.idUsuario) // Melhor usar id_usuario para referencias de id.
-    }
+    let json_search = {_id: new ObjectID(req.body.idUsuario) }
     let json_update = {}
 
     // Se uma nova senha tiver sido solicitada, a testamos
-    if(req.body.senha != undefined && req.body.senha != "") {
+    if(req.body.senha !== undefined && req.body.senha !== "" && req.body.senha !== null) {
     	const erros_senha = validators.administrador.perfil.atualizaPerfil.errosAtualizacaoDeSenha(req);
     	if(erros_senha) return res.status(httpCodes.getValue('NaoAutorizado')).json({status:false, erros:erros_senha});
     	req.body.senha = await crypto.createHash("md5").update(req.body.senha).digest("hex");

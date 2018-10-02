@@ -3,5 +3,5 @@ const variables = require('../../config/variables');
 const controllerAtualizarUsuarios = require('../controllers/administrador/usuarios/atualizarUsuarios');
 
 module.exports = (application) => {
-    application.put(`${variables.base}/administrador/perfil`, permissao.administrador, (req, res) => {controllerAtualizarUsuarios.atualizarUsuarios(req, res)});
+    application.put(`${variables.base}/usuario/perfil`, permissao.usuario, (req, res) => {controllerAtualizarUsuarios.atualizarUsuarios(req, res)});
 };
