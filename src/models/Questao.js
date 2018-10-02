@@ -2,6 +2,8 @@
     Autor: Rodrigo Azevedo
 */
 const mongoose = require('mongoose');
+const mongoosePaginate = require('mongoose-paginate');
+
 const Schema = mongoose.Schema;
 
 const QuestaoSchema = new Schema({
@@ -23,4 +25,6 @@ const QuestaoSchema = new Schema({
     dataCriacao: Date
 });
 
+// Pagination para este modelo do mongoose
+QuestaoSchema.plugin(mongoosePaginate);
 mongoose.model('Questao', QuestaoSchema);
