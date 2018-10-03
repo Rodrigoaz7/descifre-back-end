@@ -66,5 +66,5 @@ exports.processarQuiz = async (req, res) => {
     // Push jogador quiz;
     await Quiz.update({_id: new ObjectID(idQuiz)},{$set:{jogadas:arrayRetorno, pontuacao:pontuacao}});
 
-    return res.status(httpCodes.getValue("OK")).json({status:true, msg: "Resultado final do quiz.", resultado: arrayRetorno});
+    return res.status(httpCodes.getValue("OK")).json({status:true, msg: "Resultado final do quiz.", resultado: arrayRetorno, idRodada:buscaQuiz.idRodada});
 };
