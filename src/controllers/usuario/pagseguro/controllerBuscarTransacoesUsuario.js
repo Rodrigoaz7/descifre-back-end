@@ -6,12 +6,12 @@ const httpCodes = require('../../../util/httpCodes');
 exports.buscarTransacao = async (req, res) => {
     const options = {
         method: 'GET',
-        url: `https://${variables.pagseguroHost}/v2/checkout`,
+        url: `https://${variables.pagseguroHost}/v2/transactions`,
         qs:
         {
             email: `${variables.emailPagseguro}`,
             token: `${variables.tokenPagseguro}`,
-            reference: req.body.idUsuario
+            reference: req.params.idUsuario
         },
         headers:
         {
@@ -22,8 +22,11 @@ exports.buscarTransacao = async (req, res) => {
 
     request(options, function (error, response, body) {
         if (error) throw new Error(error);
-
-        console.log(body);
+        const jsonResponse = parser.toJson(body);
+        let data = JSON.parse(jsonResponse);
+  
+        return res.status(httpCodes.getValue('OK')).json({status:true, transacoes: data})
     });
+
 
 }
