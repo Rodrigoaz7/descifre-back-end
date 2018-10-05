@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 const ObjectID = require('mongodb').ObjectID;
 const Transacao = mongoose.model('Transacao');
 const Usuario = mongoose.model('Usuario');
+const Rodada = mongoose.model('Rodada');
 const Token = mongoose.model('Token');
 const validators = require('../../../index');
 const returns = require('../../../util/returns');
@@ -59,6 +60,10 @@ exports.cadastrarTransacao = async (req, res) => {
         json_set = {quantidade_cifras: parseInt(user_enviatario.quantidade_cifras) - 
             parseInt(req.body.quantia_transferida)};
         
+        // Testando se o usuario ja terminou em alguma rodada numa posicao ganhadora
+        // let rodadasGanhas = await Rodada.find({"ganhadores.jogador": new ObjectID(req.body.id_enviado_por)});
+        // console.log(rodadasGanhas)
+        // if(rodadasGanhas === null || rodadasGanhas === []) return error(res, user);
         let user = await genericDAO.atualizarUmObjeto(Usuario, json_search, json_set);
         if(user.error) return returns.error(res, user);
     }
@@ -68,7 +73,8 @@ exports.cadastrarTransacao = async (req, res) => {
         recebido_por: new ObjectID(req.body.id_recebido_por),
         tipo: req.body.tipo,
         quantia_transferida: req.body.quantia_transferida,
-        data_transferencia: req.body.data_transferencia
+        data_transferencia: req.body.data_transferencia,
+        status: 0
     });
 
     let salvarTransacao = await genericDAO.salvar(novaTransacao);

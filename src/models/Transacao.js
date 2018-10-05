@@ -18,7 +18,8 @@ const TransacaoSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Usuario'
     },
-    tipo: String //Tipo pode ser 'saque', 'compra', 'transferencia', "premio"	
+    tipo: String, //Tipo pode ser 'saque', 'compra', 'transferencia', "premio"	
+    status: Number //status definido num util chamado statusCode
 });
 
 mongoose.model('Transacao', TransacaoSchema);
