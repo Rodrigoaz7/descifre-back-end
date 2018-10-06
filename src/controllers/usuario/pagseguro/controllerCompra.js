@@ -34,7 +34,6 @@ exports.realizarCheckout = async (req, res) => {
 
     request(options, function (error, response, body) {
         if (error) throw new Error(error);
-        
         const jsonResponse = parser.toJson(body);
         let data = JSON.parse(jsonResponse);
 

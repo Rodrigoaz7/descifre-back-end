@@ -60,7 +60,7 @@ const gerarJob = (rodada) => {
 
                         novaTransacao.save(function(err){
                             if(err) console.log(err)
-                            Usuario.update({_id: new ObjectID(dataRodada.idUsuario)},{$inc:{quantidade_cifras:valorTransferir}},function(err, data){
+                            Usuario.update({_id: new ObjectID(dataRodada.idUsuario)},{$inc:{quantidade_cifras:valorTransferir},$set:{ganhadoresRodada:true}},function(err, data){
                                 // Objeto salvo
                             });
                         });

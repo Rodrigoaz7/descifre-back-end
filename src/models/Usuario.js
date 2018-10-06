@@ -27,6 +27,10 @@ const UsuarioSchema = new Schema({
     quantidade_cifras: {
         type: Number,
         default: 0
+    },
+    ganhadoresRodada: {
+        type: Boolean,
+        default: false
     }
 });
 
