@@ -1,6 +1,6 @@
 const variables = require('../../../../config/variables');
 const request = require("request");
-const parser = require('xml2json');
+const convert = require('xml-js');
 const httpCodes = require('../../../util/httpCodes');
 exports.realizarCheckout = async (req, res) => {
     const urlPagseguro = `?email=&token=`;
@@ -28,15 +28,16 @@ exports.realizarCheckout = async (req, res) => {
             itemQuantity1: `${parseInt(req.body.quantidadeCifras)}`,
             acceptPaymentMethodGroup: 'CREDIT_CARD,BOLETO',
             acceptPaymentMethodName: 'DEBITO_BANCO_BRASIL,DEBITO_BRADESCO',
-            reference: req.body.idUsuario
+            reference: 'compraDescifre'
         }
     };
 
     request(options, function (error, response, body) {
         if (error) throw new Error(error);
-        const jsonResponse = parser.toJson(body);
-        let data = JSON.parse(jsonResponse);
-
-        res.status(httpCodes.getValue('OK')).json({status:true, checkout: data.checkout});
+        let data = JSON.parse(convert.xml2json(body, {compact: true, spaces: 4}));
+        let checkout={
+            code:data.checkout.code._text
+        }
+        res.status(httpCodes.getValue('OK')).json({status:true, checkout: checkout});
     });
 }

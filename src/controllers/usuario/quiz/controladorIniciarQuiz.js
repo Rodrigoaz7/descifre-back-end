@@ -14,8 +14,8 @@ const utilRealizaCompra = require('../../../util/transacoes/realizarCompra');
 
 exports.iniciarQuiz = async (req, res) => {
     // Salvando em variaveis o id do usuario e rodada.
-    let {idUsuario} = req.body;
-    let {idRodada} = req.body;
+    let idUsuario = req.body.idUsuario;
+    let idRodada = req.body.idRodada;
 
     // Buscando no banco o usuário e a rodada.
     let buscaRodada = await Rodada.findOne({_id: new ObjectID(idRodada)});

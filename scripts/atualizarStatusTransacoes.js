@@ -1,9 +1,9 @@
-const variables = require('../../../../config/variables');
+const variables = require('../config/variables');
 const request = require("request");
 const parser = require('xml2json');
-const httpCodes = require('../../../util/httpCodes');
+const schedule = require('node-schedule');
 
-exports.buscarTransacao = async (req, res) => {
+exports.ouvirAtualizacoes = async (req, res) => {
     const options = {
         method: 'GET',
         url: `https://${variables.pagseguroHost}/v2/transactions`,
@@ -11,7 +11,7 @@ exports.buscarTransacao = async (req, res) => {
         {
             email: `${variables.emailPagseguro}`,
             token: `${variables.tokenPagseguro}`,
-            reference: req.params.idUsuario
+            reference: 'compraDescifre'
         },
         headers:
         {
@@ -24,9 +24,16 @@ exports.buscarTransacao = async (req, res) => {
         if (error) throw new Error(error);
         const jsonResponse = parser.toJson(body);
         let data = JSON.parse(jsonResponse);
-  
-        return res.status(httpCodes.getValue('OK')).json({status:true, transacoes: data})
+        let transacoes = data.transactionSearchResult.transactions.transaction;
+        let transacoesPagas = [];
+        transacoes.map(transacao=>{
+            if(transacao.status=='1') transacoesPagas.push(transacao);
+        });
+        
+        console.log(transacoesPagas)
     });
-
+    // schedule.scheduleJob('30 * * * * *', function(){
+    //     console.log('The answer to life, the universe, and everything!');
+    // });
 
 }
