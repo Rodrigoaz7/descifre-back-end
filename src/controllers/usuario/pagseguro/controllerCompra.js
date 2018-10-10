@@ -33,7 +33,8 @@ exports.realizarCheckout = async (req, res) => {
     };
 
     request(options, function (error, response, body) {
-        if (error) throw new Error(error);
+        if (error) res.status(httpCodes.getValue('ServerErro')).json({status: false, msg: "Erro de processamento interno."})
+        
         let data = JSON.parse(convert.xml2json(body, {compact: true, spaces: 4}));
         let checkout={
             code:data.checkout.code._text
