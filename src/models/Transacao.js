@@ -19,7 +19,8 @@ const TransacaoSchema = new Schema({
         ref: 'Usuario'
     },
     tipo: String, //Tipo pode ser 'saque', 'compra', 'transferencia', "premio"	
-    status: Number //status definido num util chamado statusCode
+    status: Number, //status definido num util chamado statusCode
+    hashCompra: String
 });
 
 mongoose.model('Transacao', TransacaoSchema);
