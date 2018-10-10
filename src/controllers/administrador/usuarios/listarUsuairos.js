@@ -17,7 +17,7 @@ exports.listarUsuarios = async (req, res) => {
     	const resultado = matchSorter(pessoas, filtro, {keys: ['nome', 'email']});
     	usuarios = await Usuario.find({pessoa: resultado}).populate('pessoa').limit(limite).exec();
     } else {
-    	usuarios = await Usuario.find({}).populate('pessoa').limit(limite).exec();
+    	usuarios = await Usuario.find({}).populate('pessoa').sort({'dataCriacao': -1}).limit(limite).exec();
     }
     console.log(parseInt(httpCodes.getValue("OK")))
     return res.status(parseInt(httpCodes.getValue("OK"))).json({status: true, msg: responses.getValue("usuariosListados"), usuarios: usuarios});

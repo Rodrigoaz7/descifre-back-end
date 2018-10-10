@@ -82,7 +82,8 @@ exports.realizarCadastro = async (req, res) => {
         quantia_transferida: 5,
         enviado_por: req.body.idUsuarioIndicado,
         recebido_por: req.body.idUsuarioIndicado,
-        tipo: "indicacao" 
+        tipo: "indicacao",
+        status: 1
     });
     await novaTransacao.save();
     await Usuario.update({_id:req.body.idUsuarioIndicado},{$inc:{quantidade_cifras:5}})
