@@ -18,10 +18,10 @@ exports.contadorQuestaoCategoria = async (req, res) =>{
     } else {
         quantidadeQuestoes = await Questao.count({});
     }
-
+    
     let data = {
         status: true,
-        quantidadeQuestoes: parseInt(quantidadeQuestoes/30)
+        quantidadeQuestoes: quantidadeQuestoes<30? parseInt(quantidadeQuestoes):parseInt(quantidadeQuestoes/30)
     };
 
     return res.status(parseInt(httpCodes.getValue("OK"))).json(data);
