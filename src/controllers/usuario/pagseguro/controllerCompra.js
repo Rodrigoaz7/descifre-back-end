@@ -37,7 +37,7 @@ exports.realizarCheckout = async (req, res) => {
     };
 
     request(options, function (error, response, body) {
-        if (error) throw new Error(error);
+        if (error) res.status(500).json({status: false, erros:[{msg:"Erro internos."}]});
         let objetoPagseguro = {
             idUsuario: req.body.idUsuario,
             cifras: parseInt(req.body.quantidadeCifras),

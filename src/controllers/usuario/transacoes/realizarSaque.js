@@ -6,7 +6,7 @@ const Usuario = mongoose.model('Usuario');
 const Transacao = mongoose.model('Transacao');
 const crypto = require('crypto');
 
-exports.realizarSaqueUsuario = async (req, res) =>{
+exports.realizarSaqueUsuario = async (req, res) => {
     const erros = validatorSaque.errosCadastro(req);
     if(erros) return res.status(httpCodes.getValue('ReqInvalida')).json({status:false, erros: erros});
     const usuarioBanco = await Usuario.findOne({_id: new ObjectID(req.body.idUsuario)});

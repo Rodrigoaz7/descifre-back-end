@@ -21,7 +21,8 @@ exports.realizarCompra = async (idEnviadoPor, valorCompra) =>{
         recebido_por: new ObjectID(idEnviadoPor),
         tipo: "compra",
         quantia_transferida: valorCompra,
-        data_transferencia: new Date()
+        data_transferencia: new Date(),
+        status: 1
     });
 
     let salvarTransacao = await genericDAO.salvar(novaTransacao);

@@ -15,6 +15,7 @@ const responses = new Enum({
     "usuariosListados": "Usuarios Listados com sucesso.",
     "usuariosAtualizada": "Usuário atualizado com sucesso",
     "TransacaoRelizada": "Transação de cifras realizada com sucesso.",
+    "TransacaoAtualizada": "Transação de cifras atualizada com sucesso.",
     "BuscaRealizada": "Busca realizada com sucesso.",
     "PatrocinadorCriado": "Patrocinador cadastrado com sucesso.",
     "PatrocinadorAtualizado": "Patrocinador atualizado com sucesso."
