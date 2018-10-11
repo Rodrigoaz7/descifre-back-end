@@ -31,24 +31,27 @@ exports.listarRodadas = async (req, res) => {
 	if(data_abertura) {
 		let date = new Date(data_abertura);
 		date = new Date(date.getTime() - 3*60*60000);
-		json_search.dataAbertura = {$gt: new Date(date), 
-			$lt:(new Date(new Date(date).getTime() + 1*24*60*60000))};
+		// json_search.dataAbertura = {$gte: new Date(date), 
+		// 	$lte:(new Date(new Date(date).getTime() + 1*24*60*60000))};
+		json_search.dataAbertura = {$gte: new Date(date)};
 	}
 
 	if(data_fechamento) {
 
 		let datef = new Date(data_fechamento);
 		datef = new Date(datef.getTime() - 3*60*60000);
-		json_search.dataFinalizacao = {$gt: new Date(datef), 
-			$lt:(new Date(new Date(datef).getTime() + 1*24*60*60000))};
+		// json_search.dataFinalizacao = {$gt: new Date(datef), 
+		// 	$lt:(new Date(new Date(datef).getTime() + 1*24*60*60000))};
+		json_search.dataFinalizacao = {$lte: new Date(datef)};
 	}
 
 	if(situacao){
 		let data_agora = new Date();
 		if(situacao == "Aberto"){
-			json_search.dataFinalizacao = {$gt: (data_agora)}
+			json_search.dataAbertura = {$lte: (data_agora)}
+			json_search.dataFinalizacao = {$gte: (data_agora)}
 		} else {
-			json_search.dataFinalizacao = {$lt: (data_agora)}
+			json_search = { $or: [ { dataAbertura: {$gt: data_agora} }, { dataFinalizacao: {$lt:data_agora} } ] }
 		}
 	}
 
