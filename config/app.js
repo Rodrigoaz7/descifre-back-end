@@ -25,8 +25,8 @@ const env = require('dotenv');
 /* Importando o módulo do mongoose. */
 const mongoose = require('mongoose');
 
-/* Eventos do nodeJS */
-const eventEmitter = new (require('events').EventEmitter)();
+/* Importando o CORS */
+const cors = require('cors')
 
 /* configurar o middleware express.static */
 app.use(express.static('./public'));
@@ -57,23 +57,12 @@ mongoose.connection.on('error',err => {
 	console.log(`🙅 🚫 → ${err.message}`);
 });
 
-app.use( (req, res, next) => {
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
-    res.setHeader("Access-Control-Allow-Headers", "content-type");
-    res.setHeader("Access-Control-Allow-Credentials", true);
-    next();
-});
+app.use(cors());
 
 /* efetua o autoload das rotas, dos models e dos controllers para o objeto app */
 consign().include('src/models')
 	.then('src/routes')
 	.then('src/controllers').into(app);
 	
-eventEmitter.on('error', ()=>{
-	console.log('oi')
-});
-
-
 /* exportar o objeto app */
 module.exports = app;
