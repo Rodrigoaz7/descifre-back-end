@@ -57,19 +57,7 @@ mongoose.connection.on('error',err => {
 	console.log(`🙅 🚫 → ${err.message}`);
 });
 
-const whitelist = ['https://descifre.com', 'http://descifre.com:8080', 'https://descifre.com:8080', 'http://descifre.com'];
-
-const corsOptions = {
-  origin: function (origin, callback) {
-    if (whitelist.indexOf(origin) !== -1) {
-      callback(null, true)
-    } else {
-      callback(new Error('Not allowed by CORS'))
-    }
-  }
-};
-
-app.use(cors(corsOptions));
+app.use(cors());
 
 /* efetua o autoload das rotas, dos models e dos controllers para o objeto app */
 consign().include('src/models')
@@ -78,3 +66,5 @@ consign().include('src/models')
 	
 /* exportar o objeto app */
 module.exports = app;
+
+
