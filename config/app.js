@@ -57,15 +57,20 @@ mongoose.connection.on('error',err => {
 	console.log(`🙅 🚫 → ${err.message}`);
 });
 
-app.use(cors());
+//app.use(cors());
 app.use(function(req, res, next) {
-	res.header('Access-Control-Allow-Origin', 'descifre.com');
-	res.header('Access-Control-Allow-Origin', 'www.descifre.com');
-    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-    res.header('Access-Control-Allow-Headers', 'Content-Type');
-	res.header("Access-Control-Allow-Origin", "*");
-	res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-	next();
+	// Website you wish to allow to connect
+    res.setHeader('Access-Control-Allow-Origin', 'https://descifre.com:8080');
+
+    // Request methods you wish to allow
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+
+    // Request headers you wish to allow
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+
+    // Set to true if you need the website to include cookies in the requests sent
+    // to the API (e.g. in case you use sessions)
+    res.setHeader('Access-Control-Allow-Credentials', true);
 });
 /* efetua o autoload das rotas, dos models e dos controllers para o objeto app */
 consign().include('src/models')
