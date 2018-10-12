@@ -42,10 +42,10 @@ const gerarGanhadores = (rodada) =>{
 const gerarJob = (rodada) => {
     let dataFinalizacao = new Date(rodada.dataFinalizacao);
     let idRodada = rodada._id;
-    schedule.scheduleJob(dataFinalizacao, function(){
-        Rodada.findOne({_id: new ObjectID(idRodada)}).populate('jogadores.quiz').exec(function(err, dataRodada){
+    schedule.scheduleJob(dataFinalizacao, async function(){
+        Rodada.findOne({_id: new ObjectID(idRodada)}).populate('jogadores.quiz').exec(async function(err, dataRodada){
             const ganhadores = gerarGanhadores(dataRodada);
-            Rodada.update({_id: new ObjectID(idRodada)},{$set:{ganhadores:ganhadores}},function(err, dataUpdate){
+            Rodada.update({_id: new ObjectID(idRodada)},{$set:{ganhadores:ganhadores}},async function(err, dataUpdate){
                 let premio = parseFloat(dataRodada.premiacao);
                 for(let i = 0; i<ganhadores.length; i++){
                     if(ganhadores[i].jogador!==undefined){
@@ -57,13 +57,9 @@ const gerarJob = (rodada) => {
                             tipo: "premio",
                             data_transferencia: new Date()
                         });
-
-                        novaTransacao.save(function(err){
-                            if(err) console.log(err)
-                            Usuario.update({_id: new ObjectID(dataRodada.idUsuario)},{$inc:{quantidade_cifras:valorTransferir},$set:{ganhadoresRodada:true}},function(err, data){
-                                // Objeto salvo
-                            });
-                        });
+                        await novaTransacao.save();
+                        await Usuario.update({_id: new ObjectID(ganhadores[i].jogador)},{$inc:{quantidade_cifras:valorTransferir}}); 
+                        await Usuario.update({_id: new ObjectID(ganhadores[i].jogador)},{$set:{ganhadoresRodada:true}});
                     }
                 }
             });

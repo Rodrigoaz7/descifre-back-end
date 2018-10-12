@@ -57,14 +57,17 @@ exports.processarQuiz = async (req, res) => {
             arrayRetorno.push(dataAppend);
         });
     }
+    const buscarRodada = await Rodada.findOne({_id: new ObjectID(buscaQuiz.idRodada)});
+    if(!(buscarRodada.jogadores.find(jogador => jogador.quiz==idQuiz))){
+        // Push jogador na rodada;
+        await Rodada.update({_id: new ObjectID(buscaQuiz.idRodada)},{$push:{jogadores:{
+            quiz: idQuiz
+        }}});
 
-    // Push jogador na rodada;
-    await Rodada.update({_id: new ObjectID(buscaQuiz.idRodada)},{$push:{jogadores:{
-        quiz: idQuiz
-    }}});
-
-    // Push jogador quiz;
-    await Quiz.update({_id: new ObjectID(idQuiz)},{$set:{jogadas:arrayRetorno, pontuacao:pontuacao}});
+        // Push jogador quiz;
+        await Quiz.update({_id: new ObjectID(idQuiz)},{$set:{jogadas:arrayRetorno, pontuacao:pontuacao}});
+    }
+    
 
     return res.status(httpCodes.getValue("OK")).json({status:true, msg: "Resultado final do quiz.", resultado: arrayRetorno, idRodada:buscaQuiz.idRodada});
 };

@@ -41,28 +41,26 @@ exports.agendarGanhadores = async () =>{
         
         let idRodada = rodada._id;
 
-        schedule.scheduleJob(dataFinalizacao, function(){
-            Rodada.findOne({_id: new ObjectID(idRodada)}).populate('jogadores.quiz').exec(function(err, dataRodada){
+        schedule.scheduleJob(dataFinalizacao, async function(){
+            Rodada.findOne({_id: new ObjectID(idRodada)}).populate('jogadores.quiz').exec(async function(err, dataRodada){
                 const ganhadores = gerarGanhadores(dataRodada);
-                Rodada.update({_id: new ObjectID(idRodada)},{$set:{ganhadores:ganhadores}},function(err, dataUpdate){
+                console.log('Ganhadores:',ganhadores);
+                Rodada.update({_id: new ObjectID(idRodada)},{$set:{ganhadores:ganhadores}},async function(err, dataUpdate){
                     let premio = parseFloat(dataRodada.premiacao);
                     for(let i = 0; i<ganhadores.length; i++){
                         if(ganhadores[i].jogador!==undefined){
                             
                             let valorTransferir = premio*parseFloat(ganhadores[i].porcentagemPremio)/100;
                             let novaTransacao = new Transacao({
-                                quantia_transferida: valorTransferir,
+                                quantia_transferida: parseFloat(valorTransferir),
                                 enviado_por: ganhadores[i].jogador,
                                 recebido_por: ganhadores[i].jogador,
                                 tipo: "premio"
                             });
 
-                            novaTransacao.save(function(err){
-                                if(err) console.log(err)
-                                Usuario.update({_id: new ObjectID(dataRodada.idUsuario)},{$inc:{quantidade_cifras:valorTransferir},$set:{ganhadoresRodada:true}},function(err, data){
-                                    // Dados salvos
-                                });
-                            });
+                            await novaTransacao.save();
+                            await Usuario.update({_id: new ObjectID(ganhadores[i].jogador)},{$inc:{quantidade_cifras:valorTransferir}}); 
+                            await Usuario.update({_id: new ObjectID(ganhadores[i].jogador)},{$set:{ganhadoresRodada:true}});
                         }
                     }
                 });
