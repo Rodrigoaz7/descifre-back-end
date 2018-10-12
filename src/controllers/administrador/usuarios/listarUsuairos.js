@@ -35,10 +35,9 @@ exports.listarUsuarios = async (req, res) => {
     } else {
         usuarios = await Usuario.paginate({},
         {
-            offset: limite_inferior, limit: limite, populate: ['pessoa']
+            offset: 1, limit: limite, populate: ['pessoa']
         });
-
-    	//usuarios = await Usuario.find({}).populate('pessoa').sort({'dataCriacao': -1}).limit(limite).exec();
+    	// usuarios = await Usuario.find({}).populate('pessoa').sort({'dataCriacao': -1}).limit(limite).exec();
     }
 
     return res.status(parseInt(httpCodes.getValue("OK"))).json({status: true, msg: responses.getValue("usuariosListados"), usuarios: usuarios.docs});
