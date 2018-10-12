@@ -2,6 +2,7 @@
     Autor: Marcus Dantas
 */
 const mongoose = require('mongoose');
+const mongoosePaginate = require('mongoose-paginate');
 const Schema = mongoose.Schema;
 
 const UsuarioSchema = new Schema({
@@ -33,5 +34,6 @@ const UsuarioSchema = new Schema({
         default: false
     }
 });
-
+// Paginacao
+UsuarioSchema.plugin(mongoosePaginate);
 mongoose.model('Usuario', UsuarioSchema);
