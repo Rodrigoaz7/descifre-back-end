@@ -58,7 +58,11 @@ mongoose.connection.on('error',err => {
 });
 
 app.use(cors());
-
+app.use(function(req, res, next) {
+	res.header("Access-Control-Allow-Origin", "*");
+	res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+	next();
+});
 /* efetua o autoload das rotas, dos models e dos controllers para o objeto app */
 consign().include('src/models')
 	.then('src/routes')
