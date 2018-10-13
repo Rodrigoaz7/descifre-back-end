@@ -35,7 +35,7 @@ exports.listarUsuarios = async (req, res) => {
     } else {
         usuarios = await Usuario.paginate({},
         {
-            offset: 1, limit: limite, populate: ['pessoa']
+            offset: limite_inferior, limit: limite, populate: ['pessoa']
         });
     	// usuarios = await Usuario.find({}).populate('pessoa').sort({'dataCriacao': -1}).limit(limite).exec();
     }
