@@ -7,7 +7,7 @@ const controllerLitarTransacoesUsuario = require('../controllers/usuario/transac
 const controllerSaqueUsuario = require('../controllers/usuario/transacoes/realizarSaque');
 
 module.exports = (application) => {
-    application.get(`${variables.base}/administrador/transacoes/:token/:limite`, permissao.administrador, (req, res) => {controllerListarTransacoes.listarTransacoes(req, res)});
+    application.get(`${variables.base}/administrador/transacoes/:token/:pagina`, permissao.administrador, (req, res) => {controllerListarTransacoes.listarTransacoes(req, res)});
     application.post(`${variables.base}/administrador/transacoes`, permissao.administrador, (req, res) => {controllerCadastrarTransacoes.cadastrarTransacao(req, res)});
     application.put(`${variables.base}/administrador/transacoes`, permissao.administrador, (req, res) => {controllerAtualizarTransacoes.atualizarTransacao(req, res)});
 

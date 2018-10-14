@@ -18,9 +18,16 @@ const matchSorter = require('match-sorter');
 
 
 exports.listarTransacoes = async (req, res) => {
-
+	const limite = 20;
 	const { tipo, data, user } = req.query;
-	let json_search = {}
+
+	let pagina = req.params.pagina;
+	let json_search = {};
+	let limite_inferior = 0;
+
+	if(pagina > 0){
+        limite_inferior = parseInt(pagina)*limite-limite;
+    }
 
 	if(tipo) {
 		json_search.tipo = tipo;
@@ -35,11 +42,15 @@ exports.listarTransacoes = async (req, res) => {
  		json_search.recebido_por = resultado;
 	}
 
-	let lista_transacoes = await Transacao.find({...json_search}).populate('recebido_por').populate('pessoa').populate('enviado_por').limit(parseInt(req.params.limite)).exec()
+	//let lista_transacoes = await Transacao.find({...json_search}).populate('recebido_por').populate('pessoa').populate('enviado_por').limit(parseInt(req.params.limite)).exec()
+	let lista_transacoes = await Transacao.paginate({...json_search},
+    {
+        offset: limite_inferior, limit: limite, populate: ['recebido_por', 'pessoa', 'enviado_por']
+    });
 
 	if(lista_transacoes.error) return returns.error(res, lista_transacoes);
 
     return res.status(httpCodes.get('OK')).json({status: true, 
     	msg:responses.getValue('dadosListados'), 
-    	transacoes: lista_transacoes});
+    	transacoes: lista_transacoes.docs});
 }

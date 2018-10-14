@@ -2,6 +2,7 @@
     Autor: Rodrigo Azevedo
 */
 const mongoose = require('mongoose');
+const mongoosePaginate = require('mongoose-paginate')
 const Schema = mongoose.Schema;
 
 const TransacaoSchema = new Schema({
@@ -23,4 +24,6 @@ const TransacaoSchema = new Schema({
     hashCompra: String
 });
 
+// Paginacao
+TransacaoSchema.plugin(mongoosePaginate);
 mongoose.model('Transacao', TransacaoSchema);
