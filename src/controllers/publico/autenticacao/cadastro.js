@@ -79,7 +79,7 @@ exports.realizarCadastro = async (req, res) => {
     let htmlEnvio = templateCadastro.htmlRetorno(salvarPessoa.nome);
 
     const dataEmail = await controllerEnviarEmail.enviarEmail([salvarPessoa.email],"Bem vindo ao De$cifre", htmlEnvio);
-    console.log(dataEmail)
+    
     /* Retorno com sucesso */
     return res.status(httpCodes.get('OK')).json({status: true, msg:responses.getValue('usuarioCriado'), token: token, usuario: usuarioBusca});
 };

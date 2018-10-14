@@ -47,7 +47,7 @@ exports.agendarGanhadores = async () =>{
                 console.log('Ganhadores:',ganhadores);
                 Rodada.update({_id: new ObjectID(idRodada)},{$set:{ganhadores:ganhadores}},async function(err, dataUpdate){
                     let premio = parseFloat(dataRodada.premiacao);
-                    for(let i = 0; i<ganhadores.length; i++){
+                    for(let i = ganhadores.length-1; i>=0; i--){
                         if(ganhadores[i].jogador!==undefined){
                             
                             let valorTransferir = premio*parseFloat(ganhadores[i].porcentagemPremio)/100;
