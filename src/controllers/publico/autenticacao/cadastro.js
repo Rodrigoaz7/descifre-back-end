@@ -13,6 +13,8 @@ const responses = require('../../../util/responses');
 const genericDAO = require('../../../util/genericDAO');
 const utilToken = require('../../../util/token');
 const ObjectID = require('mongodb').ObjectID;
+const controllerEnviarEmail = require('../../email/controllerEnviarEmail');
+const templateCadastro = require('../../email/html/novoUsuaio');
 
 exports.realizarCadastro = async (req, res) => {
 
@@ -73,7 +75,11 @@ exports.realizarCadastro = async (req, res) => {
     let salvarToken = genericDAO.salvar(novoToken);
 
     if(salvarToken.error) returns.returnError(res, salvarToken);
+    
+    let htmlEnvio = templateCadastro.htmlRetorno(salvarPessoa.nome);
 
+    await controllerEnviarEmail.enviarEmail([salvarPessoa.email],"Bem vindo ao De$cifre", htmlEnvio);
+    
     /* Retorno com sucesso */
     return res.status(httpCodes.get('OK')).json({status: true, msg:responses.getValue('usuarioCriado'), token: token, usuario: usuarioBusca});
 };
