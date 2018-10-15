@@ -28,6 +28,8 @@ const mongoose = require('mongoose');
 /* Importando o CORS */
 const cors = require('cors')
 
+app.enable('trust proxy');
+
 /* configurar o middleware express.static */
 app.use(express.static('./public'));
 
