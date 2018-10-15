@@ -27,7 +27,7 @@ exports.enviarRecuperacao = async (req, res) =>{
             }
         }
     });
-    const urlRecuperacao = `http://${process.env.AMBIENTE=="DEV"?"localhost:3000":descifre.com}/usuario/alterar-senha/${token}`;
+    const urlRecuperacao = `http://${process.env.AMBIENTE=="DEV"?"localhost:3000":"descifre.com"}/usuario/alterar-senha/${token}`;
     
     const htmlEnviar = htmlRecuperarSenha.htmlRetorno(buscaUsuario.pessoa.nome, urlRecuperacao);
     
