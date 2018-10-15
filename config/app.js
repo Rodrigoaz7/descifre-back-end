@@ -61,8 +61,7 @@ app.use(cors());
 
 /* efetua o autoload das rotas, dos models e dos controllers para o objeto app */
 consign().include('src/models')
-	.then('src/routes')
-	.then('src/controllers').into(app);
+	.then('src/routes').into(app);
 	
 /* exportar o objeto app */
 module.exports = app;
