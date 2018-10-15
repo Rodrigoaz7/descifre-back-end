@@ -3,13 +3,9 @@
 */
 const mongoose = require('mongoose');
 const Usuario = mongoose.model('Usuario');
-const Pessoa = mongoose.model('Pessoa');
-const Token = mongoose.model('Token');
 const validators = require('../../../index');
 const httpCodes = require('../../../util/httpCodes');
 const returns = require('../../../util/returns');
-const responses = require('../../../util/responses');
-const genericDAO = require('../../../util/genericDAO');
 const utilToken = require('../../../util/token');
 const crypto = require('crypto');
 
