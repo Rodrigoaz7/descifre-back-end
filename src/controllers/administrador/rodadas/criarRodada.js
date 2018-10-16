@@ -16,7 +16,7 @@ const schedule = require('node-schedule');
 const gerarGanhadores = (rodada) =>{
     let jogadoresSort = rodada.jogadores.sort((a, b) => parseFloat(a.quiz.pontuacao) - parseFloat(b.quiz.pontuacao));
     let ganhadores = [];
-    let contador = 0;
+    let contador = rodada.ganhadores.length-1;
     rodada.ganhadores.map(ganhador => {
         if(jogadoresSort.length>0){
             let data;
@@ -33,7 +33,7 @@ const gerarGanhadores = (rodada) =>{
                 }
             }
             ganhadores.push(data);
-            contador++;
+            contador--;
         }
     });
     return ganhadores;
