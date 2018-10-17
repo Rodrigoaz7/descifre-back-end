@@ -2,6 +2,7 @@
     Autor: Marcus Dantas
 */
 const mongoose = require('mongoose');
+const mongoosePaginate = require('mongoose-paginate');
 const Schema = mongoose.Schema;
 
 const IndicacaoSchema = new Schema({
@@ -17,4 +18,6 @@ const IndicacaoSchema = new Schema({
     status: Boolean
 });
 
+// Paginacao
+IndicacaoSchema.plugin(mongoosePaginate);
 mongoose.model('Indicacao', IndicacaoSchema);

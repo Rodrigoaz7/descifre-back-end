@@ -2,6 +2,7 @@
     Autor: Marcus Dantas
 */
 const mongoose = require('mongoose');
+const mongoosePaginate = require('mongoose-paginate');
 const Schema = mongoose.Schema;
 
 const QuizSchema = new Schema({
@@ -28,4 +29,6 @@ const QuizSchema = new Schema({
     dataFinalizacao: Date,
 });
 
+// Paginacao
+QuizSchema.plugin(mongoosePaginate);
 mongoose.model('Quiz', QuizSchema);

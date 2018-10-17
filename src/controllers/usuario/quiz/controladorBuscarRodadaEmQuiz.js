@@ -9,7 +9,17 @@ const responses = require('../../../util/responses');
 
 
 exports.buscarQuizzes = async (req, res) => {
-    const quizzesJogados = await Quiz.find({idUsuario: new ObjectID(req.params.idUsuario)}).populate('idRodada').exec();
+	const limite = 3;
+	let limite_inferior = 0;
+
+	if(req.params.pagina > 0){
+		limite_inferior = parseInt(req.params.pagina)*limite-limite;	
+	}
     
-    return res.status(httpCodes.get('OK')).json({status: true, msg:responses.getValue('BuscaRealizada'), quizzes: quizzesJogados});
+    const quizzesJogados = await Quiz.paginate(
+    	{idUsuario: new ObjectID(req.params.idUsuario)},
+    	{offset: limite_inferior, limit: limite, populate: ['idRodada']}
+    );
+
+    return res.status(httpCodes.get('OK')).json({status: true, msg:responses.getValue('BuscaRealizada'), quizzes: quizzesJogados.docs});
 };
