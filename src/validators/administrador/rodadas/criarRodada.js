@@ -15,7 +15,9 @@ exports.errosCadastro = (req) => {
     req.body.dataAbertura = new Date(req.body.dataAbertura);
 
     if(req.body.dataFinalizacao.getTime() - req.body.dataAbertura.getTime() <= 0){
-        erros.push({msg: "A data de finalização tem que sair maior que a data de abertura."});
+        let erro_data = [];
+        erro_data.push({msg: "A data de finalização tem que sair maior que a data de abertura."});
+        return erro_data;
     }
     return erros;
 };
