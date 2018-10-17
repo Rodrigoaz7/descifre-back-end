@@ -50,7 +50,7 @@ exports.processarQuiz = async (req, res) => {
                     questao:buscaQuestoes[indexQuestao]._id,
                     status: false,
                     resposta: questoes[index].alternativa,
-                    pontuacao: 0
+                    pontuacao: -2
                 }
             }
             pontuacao+=dataAppend.pontuacao;

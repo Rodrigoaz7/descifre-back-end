@@ -34,7 +34,7 @@ exports.listarTransacoes = async (req, res) => {
 	}
 	
 	if(data) {
-		json_search.data_transferencia = {$gt: new Date(data), $lt:(new Date(new Date(data).getTime() + 1*24*60*60000))};
+		json_search.data_transferencia = {$gte: new Date(data), $lt:(new Date(new Date(data).getTime() + 1*24*60*60000))};
 	}
 
 	if(user) {
@@ -45,7 +45,7 @@ exports.listarTransacoes = async (req, res) => {
 	//let lista_transacoes = await Transacao.find({...json_search}).populate('recebido_por').populate('pessoa').populate('enviado_por').limit(parseInt(req.params.limite)).exec()
 	let lista_transacoes = await Transacao.paginate({...json_search},
     {
-        offset: limite_inferior, limit: limite, populate: ['recebido_por', 'pessoa', 'enviado_por']
+        offset: limite_inferior, limit: limite, populate: ['recebido_por', 'pessoa', 'enviado_por'], sort: {'data_transferencia': -1}
     });
 
 	if(lista_transacoes.error) return returns.error(res, lista_transacoes);
