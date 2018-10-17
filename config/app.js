@@ -25,8 +25,16 @@ const env = require('dotenv');
 /* Importando o módulo do mongoose. */
 const mongoose = require('mongoose');
 
-/* Importando o CORS */
-const cors = require('cors')
+app.use(function(req, res, next){
+
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+    res.setHeader("Access-Control-Allow-Headers", "content-type");
+    res.setHeader("Access-Control-Allow-Credentials", true);
+
+    next();
+
+});
 
 /* configurar o middleware express.static */
 app.use(express.static('./public'));
@@ -58,29 +66,7 @@ mongoose.connection.on('error',err => {
 });
 
 
-app.use((req, res, next)=>{
-	if (req.method === 'OPTIONS') {
-		console.log('!OPTIONS');
-		var headers = {};
-		// IE8 does not allow domains to be specified, just the *
-		// headers["Access-Control-Allow-Origin"] = req.headers.origin;
-		headers["Access-Control-Allow-Origin"] = "*";
-		headers["Access-Control-Allow-Methods"] = "POST, GET, PUT, DELETE, OPTIONS";
-		headers["Access-Control-Allow-Credentials"] = false;
-		headers["Access-Control-Max-Age"] = '86400'; // 24 hours
-		headers["Access-Control-Allow-Headers"] = "X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept";
-		res.writeHead(200, headers);
-		res.end();
-	}else{
-		res.setHeader("Access-Control-Allow-Origin", "*");
-		res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
-		res.setHeader("Access-Control-Allow-Headers", "content-type");
-		res.setHeader("Access-Control-Allow-Credentials", true);
-	}
-    next();
-});
 
-app.use(cors());
 
 
 /* efetua o autoload das rotas, dos models e dos controllers para o objeto app */
