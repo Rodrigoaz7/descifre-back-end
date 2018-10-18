@@ -11,7 +11,8 @@ exports.criarRodada = async () => {
     rule.minute = 0;
 
     schedule.scheduleJob(rule, function () {
-        let dataAtual = new Date();
+        let dataTemp= new Date();
+        let dataAtual = addHours(dataTemp,3);
         let dataFinalizacaoRodadaManha = addHours(dataAtual, 12);
         let dataFinalizacaoRodadaTarde = addHours(dataAtual, 18);
         let dataFinalizacaoRodadaNoite = addHours(dataAtual, 24);
