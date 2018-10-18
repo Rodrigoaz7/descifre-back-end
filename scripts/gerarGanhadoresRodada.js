@@ -9,6 +9,7 @@ const gerarGanhadores = (rodada) =>{
     let jogadoresSort = rodada.jogadores.sort((a, b) => parseFloat(a.quiz.pontuacao) - parseFloat(b.quiz.pontuacao));
     let ganhadores = [];
     let contador = 0;
+    jogadoresSort = jogadoresSort.reverse();
     rodada.ganhadores.map(ganhador => {
         if(jogadoresSort.length>0){
             let data;

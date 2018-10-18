@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const Rodada = mongoose.model('Rodada');
 const schedule = require('node-schedule');
+const ganhadoresRodada = require('./gerarGanhadoresRodada');
 const addHours = (date, hours) => {
     return new Date(date.getTime() + hours * 60 * 60000);
 };
@@ -10,7 +11,7 @@ exports.criarRodada = async () => {
     rule.hour = 0;
     rule.minute = 0;
 
-    schedule.scheduleJob(rule, function () {
+    schedule.scheduleJob(rule, async function () {
         let dataTemp= new Date();
         let dataAtual = addHours(dataTemp,3);
         let dataFinalizacaoRodadaManha = addHours(dataAtual, 12);
@@ -74,8 +75,8 @@ exports.criarRodada = async () => {
 
         let arrayRodadas = [rodadaManha, rodadaTarde, rodadaNoite];
 
-        Rodada.insertMany(arrayRodadas, (err, docs) => {
-            console.log("Rodadas iniciadas.")
+        Rodada.insertMany(arrayRodadas, async (err, docs) => {
+            await ganhadoresRodada.agendarGanhadores();
         });
     });
 }
