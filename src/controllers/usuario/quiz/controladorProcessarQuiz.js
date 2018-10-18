@@ -45,7 +45,15 @@ exports.processarQuiz = async (req, res) => {
                     resposta: questoes[index].alternativa,
                     pontuacao: buscaQuestoes[indexQuestao].pontuacao
                 }
-            }else{
+            }
+            else if(questoes[index].alternativa === null){
+                dataAppend = {
+                    questao:buscaQuestoes[indexQuestao]._id,
+                    status: false,
+                    resposta: null,
+                    pontuacao: -1
+                }
+            } else{
                 dataAppend = {
                     questao:buscaQuestoes[indexQuestao]._id,
                     status: false,
