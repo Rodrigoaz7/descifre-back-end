@@ -22,7 +22,12 @@ const QuestaoSchema = new Schema({
     correta: Number,
     corretaTexto: String,
     pontuacao: Number,
-    dataCriacao: Date
+    dataCriacao: Date,
+    // Campos para estabelecimento de dificuldade de questoes
+    quantidadeAcertos: Number,
+    quantidadeErros: Number,
+    quantidadePulos: Number,
+    quantidadeSoma: Number
 });
 
 // Pagination para este modelo do mongoose
