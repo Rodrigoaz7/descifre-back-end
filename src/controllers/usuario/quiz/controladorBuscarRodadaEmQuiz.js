@@ -18,8 +18,8 @@ exports.buscarQuizzes = async (req, res) => {
     
     const quizzesJogados = await Quiz.paginate(
     	{idUsuario: new ObjectID(req.params.idUsuario)},
-    	{offset: limite_inferior, limit: limite, populate: ['idRodada']}
+    	{offset: limite_inferior, limit: limite, populate: ['idRodada'], sort: {'dataFinalizacao': -1}}
     );
 
-    return res.status(httpCodes.get('OK')).json({status: true, msg:responses.getValue('BuscaRealizada'), quizzes: quizzesJogados.docs});
+    return res.status(httpCodes.get('OK')).json({status: true, msg:responses.getValue('BuscaRealizada'), quizzes: quizzesJogados.docs.reverse()});
 };

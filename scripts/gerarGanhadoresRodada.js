@@ -56,7 +56,8 @@ exports.agendarGanhadores = async () =>{
                                 quantia_transferida: parseFloat(valorTransferir),
                                 enviado_por: ganhadores[i].jogador,
                                 recebido_por: ganhadores[i].jogador,
-                                tipo: "premio"
+                                tipo: "premio",
+                                status: 1
                             });
 
                             await novaTransacao.save();
