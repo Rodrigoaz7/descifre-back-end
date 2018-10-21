@@ -48,9 +48,8 @@ exports.agendarGanhadores = async () =>{
                 console.log('Ganhadores:',ganhadores);
                 Rodada.update({_id: new ObjectID(idRodada)},{$set:{ganhadores:ganhadores}},async function(err, dataUpdate){
                     let premio = parseFloat(dataRodada.premiacao);
-                    for(let i = 0; i<dataRodada.ganhadores.length; i++){
-                        if(ganhadores[i].jogador!==undefined){
-                            
+                    for(let i = 0; i<ganhadores.length; i++){
+                        if(ganhadores[i]!==undefined){
                             let valorTransferir = premio*parseFloat(ganhadores[i].porcentagemPremio)/100;
                             let novaTransacao = new Transacao({
                                 quantia_transferida: parseFloat(valorTransferir),
@@ -59,7 +58,6 @@ exports.agendarGanhadores = async () =>{
                                 tipo: "premio",
                                 status: 1
                             });
-
                             await novaTransacao.save();
                             await Usuario.update({_id: new ObjectID(ganhadores[i].jogador)},{$inc:{quantidade_cifras:valorTransferir}}); 
                             await Usuario.update({_id: new ObjectID(ganhadores[i].jogador)},{$set:{ganhadoresRodada:true}});

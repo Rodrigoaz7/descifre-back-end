@@ -56,7 +56,7 @@ app.use(expressValidator());
 app.use(morgan('dev'));
 
 /* Extraindo variaveis de ambiente. */
-env.config({ path: './env/prod.env' });
+env.config({ path: './env/dev.env' });
 
 /* Conecta com o banco de dados e lida com problemas de conexão */
 mongoose.connect(process.env.DATABASE, { useNewUrlParser: true });
