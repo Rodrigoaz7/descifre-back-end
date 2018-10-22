@@ -58,8 +58,6 @@ typings/
 .env
 
 # pasta uploads
-uploads/
-uploads/*
-./src/uploads/*
+./src/uploads/usuarios/*
 ./src/uploads/patrocinadores/*
 package-lock.json
