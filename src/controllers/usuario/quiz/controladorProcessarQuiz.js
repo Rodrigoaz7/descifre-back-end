@@ -36,9 +36,12 @@ exports.processarQuiz = async (req, res) => {
     let arrayRetorno = [];
     let pontuacao = 0;
     if(buscaQuestoes.length==questoes.length){
-        buscaQuestoes.map((questao, index)=>{
+        buscaQuestoes.map(async (questao, index) => {
             let indexQuestao = buscaQuestoes.findIndex(findQuestao => findQuestao._id==questoes[index].idQuestao);
+            
             if(buscaQuestoes[indexQuestao].corretaTexto==questoes[index].alternativa){
+                /*Acertou a questão*/
+                await Questao.update({_id:questoes[index].idQuestao},{$inc:{quantidadeAcertos:1,quantidadeSoma:1}});
                 dataAppend = {
                     questao:buscaQuestoes[indexQuestao]._id,
                     status: true,
@@ -47,6 +50,8 @@ exports.processarQuiz = async (req, res) => {
                 }
             }
             else if(questoes[index].alternativa === null){
+                /*Pulou a questão*/
+                await Questao.update({_id:questoes[index].idQuestao},{$inc:{quantidadePulos:1,quantidadeSoma:-1}});
                 dataAppend = {
                     questao:buscaQuestoes[indexQuestao]._id,
                     status: false,
@@ -54,6 +59,8 @@ exports.processarQuiz = async (req, res) => {
                     pontuacao: -1
                 }
             } else{
+                /*Errou a questão*/
+                await Questao.update({_id:questoes[index].idQuestao},{$inc:{quantidadeErros:1,quantidadeSoma:-1}});
                 dataAppend = {
                     questao:buscaQuestoes[indexQuestao]._id,
                     status: false,
