@@ -43,10 +43,10 @@ exports.agendarGanhadores = async () =>{
         let idRodada = rodada._id;
 
         schedule.scheduleJob(dataFinalizacao, async function(){
-            Rodada.findOne({_id: new ObjectID(idRodada)}).populate('jogadores.quiz').exec(async function(err, dataRodada){
+            await Rodada.findOne({_id: new ObjectID(idRodada)}).populate('jogadores.quiz').exec(async function(err, dataRodada){
                 const ganhadores = gerarGanhadores(dataRodada);
                 console.log('Ganhadores:',ganhadores);
-                Rodada.update({_id: new ObjectID(idRodada)},{$set:{ganhadores:ganhadores}},async function(err, dataUpdate){
+                await Rodada.update({_id: new ObjectID(idRodada)},{$set:{ganhadores:ganhadores}},async function(err, dataUpdate){
                     let premio = parseFloat(dataRodada.premiacao);
                     for(let i = 0; i<ganhadores.length; i++){
                         if(ganhadores[i]!==undefined){
@@ -67,4 +67,5 @@ exports.agendarGanhadores = async () =>{
             }); 
         });
     });
+    return;
 };
