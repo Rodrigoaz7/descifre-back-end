@@ -75,8 +75,9 @@ exports.criarRodada = async () => {
 
         let arrayRodadas = [rodadaManha, rodadaTarde, rodadaNoite];
 
-        Rodada.insertMany(arrayRodadas, async (err, docs) => {
-            await ganhadoresRodada.agendarGanhadores();
+        await Rodada.insertMany(arrayRodadas);
+        arrayRodadas.map((rodada)=>{
+            ganhadoresRodada.criarJobFinalizarRodada(rodada.dataFinalizacao, rodada._id);
         });
     });
 }
