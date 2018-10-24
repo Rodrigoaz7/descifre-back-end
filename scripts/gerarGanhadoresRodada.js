@@ -73,4 +73,5 @@ exports.agendarGanhadores = async () => {
         criarJobFinalizarRodada(dataFinalizacao,idRodada);
         
     });
+    return;
 };
