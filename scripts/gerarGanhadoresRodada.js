@@ -43,6 +43,7 @@ const criarJobFinalizarRodada = exports.criarJobFinalizarRodada = async (dataFin
         await Rodada.update({ _id: new ObjectID(idRodada) }, { $set: { ganhadores: ganhadoresDaRodada } });
         const premioRodada = parseFloat(rodadaQueSeraFinalizada.premiacao);
         ganhadoresDaRodada.map(async (ganhador, index) => {
+            console.log(ganhador)
             if (ganhador.jogador !== undefined) {
                 let valorTransferir = premioRodada * parseFloat(ganhador.porcentagemPremio) / 100;
                 let novaTransacao = new Transacao({
