@@ -56,7 +56,7 @@ app.use(expressValidator());
 app.use(morgan('dev'));
 
 /* Extraindo variaveis de ambiente. */
-env.config({ path: './env/prod.env' });
+env.config({ path: './env/dev.env' });
 
 /* Conecta com o banco de dados e lida com problemas de conexão */
 mongoose.connect(process.env.DATABASE, { useNewUrlParser: true });
@@ -64,10 +64,6 @@ mongoose.Promise = global.Promise; // → Queremos que o mongoose utilize promis
 mongoose.connection.on('error',err => {
 	console.log(`🙅 🚫 → ${err.message}`);
 });
-
-
-
-
 
 /* efetua o autoload das rotas, dos models e dos controllers para o objeto app */
 consign().include('src/models')

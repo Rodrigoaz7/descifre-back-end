@@ -43,7 +43,6 @@ const criarJobFinalizarRodada = exports.criarJobFinalizarRodada = async (dataFin
         await Rodada.update({ _id: new ObjectID(idRodada) }, { $set: { ganhadores: ganhadoresDaRodada } });
         const premioRodada = parseFloat(rodadaQueSeraFinalizada.premiacao);
         ganhadoresDaRodada.map(async (ganhador, index) => {
-            console.log(ganhador)
             if (ganhador.jogador !== undefined) {
                 let valorTransferir = premioRodada * parseFloat(ganhador.porcentagemPremio) / 100;
                 let novaTransacao = new Transacao({
@@ -53,11 +52,13 @@ const criarJobFinalizarRodada = exports.criarJobFinalizarRodada = async (dataFin
                     tipo: "premio",
                     status: 1
                 });
+                console.log(`Transação feita para: ${ganhador.jogador}`);
                 await novaTransacao.save();
                 await Usuario.update({ _id: new ObjectID(ganhador.jogador) }, { $inc: { quantidade_cifras: valorTransferir } });
-                await Usuario.update({ _id: new ObjectID(ganhador.jogador) }, { $set: { ganhadoresRodada: true } });
+                await Usuario.update({ _id: new ObjectID(ganhador.jogador) }, { $set: { ganhadoresRodada: true } });  
             }
         });
+        return;
     });
 };
 
@@ -72,7 +73,6 @@ exports.agendarGanhadores = async () => {
 
         let idRodada = rodada._id;
         criarJobFinalizarRodada(dataFinalizacao,idRodada);
-        
     });
     return;
 };
