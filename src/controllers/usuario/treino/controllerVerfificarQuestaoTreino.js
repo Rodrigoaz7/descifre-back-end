@@ -54,7 +54,13 @@ exports.processarQuestao = async (req, res) => {
                 }
             }
         );
-        return res.status(httpCodes.getValue('OK')).json({status:true, msg:"Usuário pulou a questão", correta: buscarQuestao.corretaTexto, pontuacao: buscarTreino.pontuacao-1, acerto: false, qntdVidas: buscarTreino.qntdVidas});
+
+        let treino = await Treino.findOne({_id: new ObjectID(req.body.idTreino)});
+        delete treino['questoesJogadas'];
+
+        return res.status(httpCodes.getValue('OK')).json({status:true, msg:"Usuário pulou a questão", 
+            correta: buscarQuestao.corretaTexto, 
+            treino: treino});
     }   
 
     if(String(buscarQuestao.corretaTexto) !== String(req.body.respostaQuestao)){
@@ -88,7 +94,13 @@ exports.processarQuestao = async (req, res) => {
                 }
             ); 
         }
-        return res.status(httpCodes.getValue('OK')).json({status:true, msg:"Usuário errou a questão", correta: buscarQuestao.corretaTexto, pontuacao: buscarTreino.pontuacao-2, acerto: false, qntdVidas: buscarTreino.qntdVidas-1});
+
+        let treino = await Treino.findOne({_id: new ObjectID(req.body.idTreino)});
+        delete treino['questoesJogadas'];
+
+        return res.status(httpCodes.getValue('OK')).json({status:true, msg:"Usuário errou a questão", 
+            correta: buscarQuestao.corretaTexto, 
+            treino: treino });
     }
 
     if(String(buscarQuestao.corretaTexto) === String(req.body.respostaQuestao)){
@@ -106,7 +118,13 @@ exports.processarQuestao = async (req, res) => {
                 }
             }
         );
-        return res.status(httpCodes.getValue('OK')).json({status:true, msg:"Usuário acertou a questão", correta: buscarQuestao.corretaTexto, pontuacao: buscarTreino.pontuacao+1, acerto: true, qntdVidas: buscarTreino.qntdVidas});
+
+        let treino = await Treino.findOne({_id: new ObjectID(req.body.idTreino)});
+        delete treino['questoesJogadas'];
+
+        return res.status(httpCodes.getValue('OK')).json({status:true, msg:"Usuário acertou a questão", 
+            correta: buscarQuestao.corretaTexto, 
+            treino: treino });
     }
 
 };
