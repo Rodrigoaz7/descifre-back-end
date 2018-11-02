@@ -18,6 +18,8 @@ exports.enviarQuestao = async (req, res) =>{
     
     if(String(buscarTreino.usuario)!==String(req.params.idUsuario)) return res.status(httpCodes.getValue('ServerErro')).json({status:false, msg:"Erro de processamento interno: id do usuário não está associado ao treino."});
 
+    if(!buscarTreino.vidaRecuperada.status) return res.status(httpCodes.getValue('OK')).json({status:false, msg:"Você não tem vidas suficientes para jogar."});
+    
     let qntdQuestoes = await Questao.count();
     
     let randomNumber = Math.floor(Math.random() * qntdQuestoes);

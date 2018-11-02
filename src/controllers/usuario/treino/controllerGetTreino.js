@@ -14,7 +14,6 @@ exports.getTreino = async (req, res) => {
     try {
         const buscarPorTreino = await Treino.findOne({usuario: req.params.idUsuario},'-questoesJogadas');
         if(!buscarPorTreino) return res.status(httpCodes.getValue('OK')).json({status:false, msg:"Você ainda não entrou no treino, clique aqui para entrar agora."});
-
         return res.status(httpCodes.getValue('OK')).json({status:true, msg:"Você já entrou em um treino :)", treino: buscarPorTreino});
     } catch (error) {
         return res.status(httpCodes.getValue('OK')).json({status:false, msg:"Erro ao processar seu treino, usuário inválido."});
