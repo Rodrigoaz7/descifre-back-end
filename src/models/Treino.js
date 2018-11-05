@@ -2,6 +2,8 @@
     Autor: Marcus Dantas
 */
 const mongoose = require('mongoose');
+const mongoosePaginate = require('mongoose-paginate');
+
 const Schema = mongoose.Schema;
 
 const TreinoSchema = new Schema({
@@ -34,4 +36,6 @@ const TreinoSchema = new Schema({
     ]
 });
 
+// Pagination para este modelo do mongoose
+TreinoSchema.plugin(mongoosePaginate);
 mongoose.model('Treino', TreinoSchema);
