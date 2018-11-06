@@ -2,12 +2,13 @@
 *   Autor Marcus Dantas
 */
 exports.errosCadastro = (req) => {
-
+    let premiacaoVoucher = Boolean(req.body.premiacaoVoucher);
     req.assert('titulo', 'O titulo não pode ser vazio').notEmpty();
     req.assert('dataAbertura', 'A data de abertura não pode ser vazia').notEmpty();
     req.assert('dataFinalizacao', 'A data de finalização não pode ser vazia').notEmpty();
     req.assert('duracao', 'A duração não pode ser vazia').notEmpty();
-    req.assert('premiacao', 'A premiação não pode ser vazia').notEmpty();
+    if(premiacaoVoucher) req.assert('premiacaoTextoVoucher', 'A premiação do voucher não pode ser vazia.').notEmpty();
+    if(!premiacaoVoucher) req.assert('premiacao', 'A premiação não pode ser vazia').notEmpty();
     req.assert('ganhadores', 'Os ganhadores não podem ser vazios').notEmpty();
     
     let erros = req.validationErrors();

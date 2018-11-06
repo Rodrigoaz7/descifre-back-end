@@ -10,6 +10,7 @@ const RodadaSchema = new Schema({
     dataFinalizacao: Date,
     duracao: Number,
     premiacao: Number,
+    premioVoucher:String,
     jogadores:[{
         quiz:{
             type: Schema.Types.ObjectId,
@@ -21,13 +22,21 @@ const RodadaSchema = new Schema({
             type: Schema.Types.ObjectId,
             ref: 'Usuario'
         },
-        porcentagemPremio: Number
+        porcentagemPremio: Number,
+        voucher:{
+            type: Schema.Types.ObjectId,
+            ref: 'Voucher'
+        } 
     }],
     abertoPor:{
         type: Schema.Types.ObjectId,
         ref: 'Usuario'  
     },
-    taxa_entrada: Number
+    taxa_entrada: Number,
+    pagamentoEmCifras:{
+        type: Boolean,
+        default: true
+    }
 });
 
 mongoose.model('Rodada', RodadaSchema);
