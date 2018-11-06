@@ -22,17 +22,19 @@ exports.cadastrarRodada = async (req, res) => {
    
     if (erros) return res.status(httpCodes.getValue('ReqInvalida')).json({status:false, erros:erros});
     
-    const patrocinador = await Usuario.findOne({email: req.body.emailPatrocinador});
-    
-    let errosPatrocinador = [{
-        msg: "E-mail patrocinador inválido."
-    }];
-
-    if(!patrocinador){
-        return res.status(httpCodes.getValue('ReqInvalida')).json({status:false, erros:errosPatrocinador});
-    }
-
     let premiacaoVoucher = Boolean(req.body.premiacaoVoucher);
+    
+    if(premiacaoVoucher){
+        const patrocinador = await Usuario.findOne({email: req.body.emailPatrocinador});
+        
+        let errosPatrocinador = [{
+            msg: "E-mail patrocinador inválido."
+        }];
+
+        if(!patrocinador){
+            return res.status(httpCodes.getValue('ReqInvalida')).json({status:false, erros:errosPatrocinador});
+        }
+    }
     
     let informacaoDecodificada = await tokenUtil.decoded(tokenUtil.getTokenRequest(req));
     
