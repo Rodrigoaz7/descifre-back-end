@@ -22,14 +22,17 @@ exports.atualizarRodada = async (req, res) => {
     req.body.abertoPor = informacaoDecodificada._id;
 
     let novaRodada = {
-        premiacao: req.body.premiacao,
         duracao: req.body.duracao,
         taxa_entrada: req.body.taxa_entrada,
         titulo: req.body.titulo,
         dataAbertura: req.body.dataAbertura,
         dataFinalizacao: req.body.dataFinalizacao,
-        ganhadores: req.body.ganhadores
+        ganhadores: req.body.ganhadores,
+        pagamentoEmCifras: req.body.pagamentoEmCifras,
+        premiacao: req.body.premiacao,
+        premioVoucher: req.body.premiacaoTextoVoucher
     }
+
     let get_rodada = { _id: new ObjectID(req.body.id) }
     
     let salvarRodada = await genericDAO.atualizarUmObjeto(Rodada, get_rodada, novaRodada);

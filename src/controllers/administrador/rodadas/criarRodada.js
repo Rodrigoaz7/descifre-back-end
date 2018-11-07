@@ -24,8 +24,10 @@ exports.cadastrarRodada = async (req, res) => {
     
     let premiacaoVoucher = Boolean(req.body.premiacaoVoucher);
     
+    let patrocinador = [];
+
     if(premiacaoVoucher){
-        const patrocinador = await Usuario.findOne({email: req.body.emailPatrocinador});
+        patrocinador = await Usuario.findOne({email: req.body.emailPatrocinador});
         
         let errosPatrocinador = [{
             msg: "E-mail patrocinador inválido."
