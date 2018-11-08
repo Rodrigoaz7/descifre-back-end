@@ -16,7 +16,6 @@ const funcaoPermissao = (res, next, permissaoUser, token) =>{
         jwt.verify(token, secret, (err, decoded)=>{
             const dataToken = decoded;
             const time = new Date().getTime();
-            
             if(time>(dataToken.exp*1000)) return res.status(401).json({status: false, renovarToken:true, tokenValido: false, msg: "Você precisa renovar seu token."});
             let permissaoEntrar = false;
             dataToken.permissoes.map((permissao, index) =>{
@@ -43,4 +42,12 @@ exports.usuario = (req, res, next) => {
     if(!token) return res.status(404).json({status:false, msg: "Você deve passar um token."});
 
     funcaoPermissao(res,next,tabelaPermisoes.getValue("Public"), token);
+}
+
+exports.patrocinador = (req, res, next) => {
+    const token = req.body.token || req.query.token || req.headers['x-access-token'] || req.params.token;
+
+    if(!token) return res.status(404).json({status:false, msg: "Você deve passar um token."});
+
+    funcaoPermissao(res,next,tabelaPermisoes.getValue("Patrocinador"), token);
 }
