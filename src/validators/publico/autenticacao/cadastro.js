@@ -3,6 +3,7 @@ exports.errosCadastro = (req) => {
     
     /* Verificando se todos os campos estão preenchidos */
     req.assert('nome', 'O seu nome não pode ser vazio').notEmpty();
+    req.assert('nome', 'O seu nome é muito grande').isLength({ max: 50});
     req.assert('email', 'O e-mail não pode ser vazio').notEmpty();
     req.assert('senha', 'A sua senha não pode ser vazia').notEmpty();
     req.assert('repetirSenha', 'Você deve repetir sua senha').notEmpty();
