@@ -46,6 +46,7 @@ exports.realizarCheckout = async (req, res) => {
             idCompra:hash,
             verificado: false
         }
+        console.log(body)
         let mongoosePagseguro = new Pagseguro(objetoPagseguro);
         mongoosePagseguro.save((err, dataMongoose)=>{
             let data = JSON.parse(convert.xml2json(body, {compact: true, spaces: 4}));
