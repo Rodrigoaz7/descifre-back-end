@@ -9,7 +9,7 @@ const mongoosePaginate = require('mongoose-paginate');
 
 exports.getRankingTreino = async (req, res) => {
 
-    const limite = 5;
+    const limite = 10;
     let limite_inferior = 0;
     let pagina = req.params.pagina;
     let colocacao = 0;
