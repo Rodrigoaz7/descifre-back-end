@@ -2,11 +2,11 @@
     Autor: Rodrigo Azevedo
 */
 const mongoose = require('mongoose');
-// const ObjectID = require('mongodb').ObjectID
+const ObjectID = require('mongodb').ObjectID
 const Rodada = mongoose.model('Rodada');
 const Token = mongoose.model('Token');
+const Voucher = mongoose.model('Voucher');
 const validators = require('../../../index');
-// const crypto = require('crypto');
 const returns = require('../../../util/returns');
 const httpCodes = require('../../../util/httpCodes');
 const responses = require('../../../util/responses');
@@ -55,7 +55,8 @@ exports.listarRodadas = async (req, res) => {
 		}
 	}
 
-	let lista_rodadas = await Rodada.find({...json_search}).populate('jogadores').populate('ganhadores').populate('abertoPor').exec()
+	let lista_rodadas = await Rodada.find({...json_search}).populate('jogadores').populate('ganhadores').
+		populate('abertoPor').exec()
 	if(lista_rodadas.error) return returns.error(res, lista_rodadas);
     
     return res.status(httpCodes.get('OK')).json({status: true, 

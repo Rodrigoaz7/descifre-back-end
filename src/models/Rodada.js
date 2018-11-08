@@ -11,6 +11,7 @@ const RodadaSchema = new Schema({
     duracao: Number,
     premiacao: Number,
     premioVoucher:String,
+    emailPatrocinador: String,
     jogadores:[{
         quiz:{
             type: Schema.Types.ObjectId,

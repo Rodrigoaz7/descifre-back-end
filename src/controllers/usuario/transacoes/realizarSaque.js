@@ -3,6 +3,7 @@ const httpCodes = require('../../../util/httpCodes');
 const mongoose = require('mongoose');
 const ObjectID = require('mongodb').ObjectID;
 const Usuario = mongoose.model('Usuario');
+const Pessoa = mongoose.model('Pessoa');
 const Transacao = mongoose.model('Transacao');
 const crypto = require('crypto');
 
@@ -14,6 +15,12 @@ exports.realizarSaqueUsuario = async (req, res) => {
     if(!usuarioBanco) return res.status(httpCodes.getValue('NotFound')).json({status:false, erros: [{msg:"Usuário não encontrado."}]});
 
     if(usuarioBanco.quantidade_cifras<150) return res.status(httpCodes.getValue('NaoAutorizado')).json({status:false, erros: [{msg:"Usuário não possuí cifras suficientes para saque"}]});
+
+    const pessoa = await Pessoa.findOne({_id: new ObjectID(usuarioBanco.pessoa)});
+    
+    if(!pessoa.conta || !pessoa.agencia) {
+        return res.status(httpCodes.getValue('NotFound')).json({status:false, erros: [{msg:"Usuário não possui conta/agência cadastrada."}]});
+    }
 
     const senhaCriptografada = await crypto.createHash("md5").update(req.body.senha).digest("hex");
 
