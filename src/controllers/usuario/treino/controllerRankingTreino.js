@@ -21,7 +21,7 @@ exports.getRankingTreino = async (req, res) => {
 
     // Tive que fazer uma consulta geral para capturar colocacao do usuario
     // Pois, o pagination não me darah todos os usuarios
-    let lista_total = await Treino.find();
+    let lista_total = await Treino.find({}).sort({'pontuacao': -1});
     let lista_ranking = await Treino.paginate({},
     {
         offset: limite_inferior, limit: limite, populate: ['usuario'], sort: {'pontuacao': -1}
@@ -32,7 +32,7 @@ exports.getRankingTreino = async (req, res) => {
     delete lista_ranking['questoesJogadas'];
     delete lista_ranking['vidaRecuperada'];
 
-    colocacao = await lista_total.findIndex(findTreino => findTreino.usuario._id==idUsuario);
+    colocacao = await lista_total.findIndex(findTreino => findTreino.usuario==idUsuario);
 
     return res.status(httpCodes.get('OK')).json({status: true, 
         msg:responses.getValue('dadosListados'), 
