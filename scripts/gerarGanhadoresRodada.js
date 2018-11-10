@@ -6,12 +6,13 @@ const Voucher = mongoose.model('Voucher');
 const Transacao = mongoose.model('Transacao');
 const schedule = require('node-schedule');
 
-const gerarGanhadores = async (rodada) => {
+const gerarGanhadores = (rodada, vouchers=null) => {
     let jogadoresSort = rodada.jogadores.sort((a, b) => parseFloat(a.quiz.pontuacao) - parseFloat(b.quiz.pontuacao));
     let ganhadores = [];
     let contador = 0;
     jogadoresSort = jogadoresSort.reverse();
-    rodada.ganhadores.map(async ganhador => {
+    
+    rodada.ganhadores.map(ganhador => {
         if (jogadoresSort.length > 0) {
             let data;
             if (jogadoresSort[contador] !== undefined) {
@@ -26,9 +27,8 @@ const gerarGanhadores = async (rodada) => {
                         _id: ganhador._id,
                         porcentagemPremio: ganhador.porcentagemPremio,
                         jogador: jogadoresSort[contador].quiz.idUsuario,
-                        voucher: ganhador.voucher
+                        voucher: vouchers[contador]._id
                     }
-                    await Voucher.update({_id: ganhador.voucher},{$set:{usuario:jogadoresSort[contador].quiz.idUsuario}});
                 }
             } else {
                 if(rodada.pagamentoEmCifras){
@@ -40,7 +40,7 @@ const gerarGanhadores = async (rodada) => {
                     data = {
                         _id: ganhador._id,
                         porcentagemPremio: ganhador.porcentagemPremio,
-                        voucher: ganhador.voucher
+                        voucher: vouchers[contador]._id
                     }
                 } 
             }
@@ -54,8 +54,9 @@ const gerarGanhadores = async (rodada) => {
 const criarJobFinalizarRodada = exports.criarJobFinalizarRodada = async (dataFinalizacao, idRodada) => {
     schedule.scheduleJob(dataFinalizacao, async () => {
         const rodadaQueSeraFinalizada = await Rodada.findOne({ _id: new ObjectID(idRodada) }).populate('jogadores.quiz').exec();
+        const vouchers = await Voucher.find({rodada:rodadaQueSeraFinalizada._id});
         if(rodadaQueSeraFinalizada.pagamentoEmCifras){
-            const ganhadoresDaRodada = gerarGanhadores(rodadaQueSeraFinalizada);
+            const ganhadoresDaRodada = gerarGanhadores(rodadaQueSeraFinalizada, vouchers);
         
             console.log('Ganhadores da rodada:');
             console.log(ganhadoresDaRodada);
@@ -80,10 +81,17 @@ const criarJobFinalizarRodada = exports.criarJobFinalizarRodada = async (dataFin
             });
             return;
         }else{
-            const ganhadoresDaRodada = gerarGanhadores(rodadaQueSeraFinalizada);
+            const ganhadoresDaRodada = gerarGanhadores(rodadaQueSeraFinalizada, vouchers);
         
             console.log('Ganhadores da rodada:');
             console.log(ganhadoresDaRodada); 
+            ganhadoresDaRodada.map(async ganhador => {
+                if(ganhador.voucher!==undefined){
+                    await Voucher.update({_id: ganhador.voucher},{$set:{usuario:ganhador.jogador}});
+                }
+            })
+            await Rodada.update({ _id: new ObjectID(idRodada) }, { $set: { ganhadores: ganhadoresDaRodada } });
+            return;
         }
         
     });
@@ -100,6 +108,7 @@ exports.agendarGanhadores = async () => {
 
         let idRodada = rodada._id;
         criarJobFinalizarRodada(dataFinalizacao,idRodada);
+        return;
     });
     return;
 };
