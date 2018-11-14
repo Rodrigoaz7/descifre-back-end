@@ -6,5 +6,5 @@ const controllerVerVouchers = require('../controllers/usuario/voucher/controller
 module.exports = (application) => {
 	application.get(`${variables.base}/patrocinador/voucher/:codigoVoucher/:token`,permissao.patrocinador, (req, res) =>{controllerVerificarVoucher.realizarVerificacao(req, res)});
 	application.post(`${variables.base}/patrocinador/voucher/`,permissao.patrocinador, (req, res) =>{controllerAtivarVoucher.realizarAtivacao(req, res)});
-	application.get(`${variables.base}/usuario/voucher/:idUsuario/:token`,permissao.patrocinador, (req, res) =>{controllerVerVouchers.verVouchers(req, res)});
+	application.get(`${variables.base}/usuario/voucher/:idUsuario/:token`,permissao.usuario, (req, res) =>{controllerVerVouchers.verVouchers(req, res)});
 };
