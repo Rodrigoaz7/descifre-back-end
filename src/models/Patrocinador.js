@@ -9,6 +9,7 @@ const PatrocinadorSchema = new Schema({
     email: String,
     telefone: String,
     tipo_patrocinador: String, // Tipo de empresa
+    localizacao:String,
     quantia_paga: Number,
     logomarca: String, // Caminho da imagem de logomarca
     rodadas_patrocinadas: [{

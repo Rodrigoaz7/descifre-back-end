@@ -38,7 +38,7 @@ exports.administrador = (req, res, next) => {
 
 exports.usuario = (req, res, next) => {
     const token = req.body.token || req.query.token || req.headers['x-access-token'] || req.params.token;
-
+    console.log('entrei')
     if(!token) return res.status(404).json({status:false, msg: "Você deve passar um token."});
 
     funcaoPermissao(res,next,tabelaPermisoes.getValue("Public"), token);

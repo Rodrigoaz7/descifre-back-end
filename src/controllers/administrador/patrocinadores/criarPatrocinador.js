@@ -18,7 +18,7 @@ exports.cadastrarPatrocinador = async (req, res) => {
 	/* Get nos erros do formulário */
     const erros = validators.administrador.patrocinadores.criarPatrocinador.errosCadastro(req);
     if (erros) return res.status(httpCodes.getValue('ReqInvalida')).json({status:false, erros:erros});
-
+    
     let novoPatrocinador = new Patrocinador(req.body);
 
     // capturando urls para criacao de diretorio de nova imagem
