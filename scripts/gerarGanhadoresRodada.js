@@ -5,7 +5,8 @@ const Usuario = mongoose.model('Usuario');
 const Voucher = mongoose.model('Voucher');
 const Transacao = mongoose.model('Transacao');
 const schedule = require('node-schedule');
-
+const PushNotifications = require('pusher-push-notifications-node');
+const variables = require('../config/variables');
 const gerarGanhadores = (rodada, vouchers=null) => {
     let jogadoresSort = rodada.jogadores.sort((a, b) => parseFloat(a.quiz.pontuacao) - parseFloat(b.quiz.pontuacao));
     let ganhadores = [];
@@ -55,6 +56,10 @@ const criarJobFinalizarRodada = exports.criarJobFinalizarRodada = async (dataFin
     schedule.scheduleJob(dataFinalizacao, async () => {
         const rodadaQueSeraFinalizada = await Rodada.findOne({ _id: new ObjectID(idRodada) }).populate('jogadores.quiz').exec();
         const vouchers = await Voucher.find({rodada:rodadaQueSeraFinalizada._id});
+        let pushNotifications = new PushNotifications({
+            instanceId: variables.instanceId,
+            secretKey: variables.secretKey
+        });
         if(rodadaQueSeraFinalizada.pagamentoEmCifras){
             const ganhadoresDaRodada = gerarGanhadores(rodadaQueSeraFinalizada, vouchers);
         
@@ -79,6 +84,20 @@ const criarJobFinalizarRodada = exports.criarJobFinalizarRodada = async (dataFin
                     await Usuario.update({ _id: new ObjectID(ganhador.jogador) }, { $set: { ganhadoresRodada: true } });  
                 }
             });
+            if(variables.ambiente!=='dev'){
+                await pushNotifications.publish(
+                    ['hello'],
+                    {
+                        fcm: {
+                            notification: {
+                                title: 'Atualização de rodadas',
+                                body: 'Olá, tudo bem? Uma rodada acabou de ser finalizada e já estamos com outra aberta. Corre lá e veja sua classificação, você pode ter a ganhado algumas cifras :)'
+                            }
+                        }
+                    }
+                );
+            }
+            
             return;
         }else{
             const ganhadoresDaRodada = gerarGanhadores(rodadaQueSeraFinalizada, vouchers);
@@ -91,6 +110,19 @@ const criarJobFinalizarRodada = exports.criarJobFinalizarRodada = async (dataFin
                 }
             })
             await Rodada.update({ _id: new ObjectID(idRodada) }, { $set: { ganhadores: ganhadoresDaRodada } });
+            if(variables.ambiente!=='dev'){
+                await pushNotifications.publish(
+                    ['hello'],
+                    {
+                        fcm: {
+                            notification: {
+                                title: 'Atualização de rodadas',
+                                body: 'Olá, tudo bem? Uma rodada acabou de ser finalizada e já estamos com outra aberta. Corre lá e veja sua classificação, você pode ter a ganhado algumas cifras :)'
+                            }
+                        }
+                    }
+                );
+            }
             return;
         }
         
