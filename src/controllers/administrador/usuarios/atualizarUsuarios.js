@@ -45,6 +45,7 @@ exports.atualizarUsuarios = async (req, res) => {
             email: req.body.email,
             telefone: req.body.telefone,
             sexo: req.body.sexo,
+            banco: req.body.banco,
             conta: req.body.conta,
             agencia: req.body.agencia,
             foto: url_imagem
@@ -62,6 +63,7 @@ exports.atualizarUsuarios = async (req, res) => {
             email: req.body.email,
             telefone: req.body.telefone,
             sexo: req.body.sexo,
+            banco: req.body.banco,
             conta: req.body.conta,
             agencia: req.body.agencia
         }

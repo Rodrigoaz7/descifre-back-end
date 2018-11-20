@@ -13,6 +13,7 @@ const PessoaSchema = new Schema({
     telefone: String,
     conta: String,
     agencia: String,
+    banco: String,
     sexo: String,
     foto: String
 });

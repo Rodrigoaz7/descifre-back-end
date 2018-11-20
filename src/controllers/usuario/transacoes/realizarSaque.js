@@ -8,6 +8,7 @@ const Transacao = mongoose.model('Transacao');
 const crypto = require('crypto');
 
 exports.realizarSaqueUsuario = async (req, res) => {
+
     const erros = validatorSaque.errosCadastro(req);
     if(erros) return res.status(httpCodes.getValue('ReqInvalida')).json({status:false, erros: erros});
     const usuarioBanco = await Usuario.findOne({_id: new ObjectID(req.body.idUsuario)});
@@ -18,8 +19,8 @@ exports.realizarSaqueUsuario = async (req, res) => {
 
     const pessoa = await Pessoa.findOne({_id: new ObjectID(usuarioBanco.pessoa)});
     
-    if(!pessoa.conta || !pessoa.agencia) {
-        return res.status(httpCodes.getValue('NotFound')).json({status:false, erros: [{msg:"Usuário não possui conta/agência cadastrada."}]});
+    if(!pessoa.conta || !pessoa.agencia || !pessoa.banco) {
+        return res.status(httpCodes.getValue('NotFound')).json({status:false, erros: [{msg:"Usuário não possui conta/agência/banco cadastradados."}]});
     }
 
     const senhaCriptografada = await crypto.createHash("md5").update(req.body.senha).digest("hex");
