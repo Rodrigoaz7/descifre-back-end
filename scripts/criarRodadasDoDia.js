@@ -1,3 +1,6 @@
+/*
+*   Autor Marcus Dantas
+*/
 const mongoose = require('mongoose');
 const Rodada = mongoose.model('Rodada');
 const schedule = require('node-schedule');
