@@ -22,7 +22,7 @@ exports.realizarLogin = async (req, res) =>{
     */
 
     /* Encriptando a senha */
-    req.body.senha = await crypto.createHash("md5").update(req.body.senha).digest("hex");
+    //req.body.senha = await crypto.createHash("md5").update(req.body.senha).digest("hex");
 
     const buscaUsuario = await Usuario.findOne({email:req.body.email}).populate('pessoa').exec();
     
