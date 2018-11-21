@@ -15,7 +15,12 @@ const PatrocinadorSchema = new Schema({
     rodadas_patrocinadas: [{
         type: Schema.Types.ObjectId,
         ref: 'Rodada'
-    }]
+    }],
+    urlExterna: String,
+    urlExternaAtiva:{
+        type: Boolean,
+        default: true
+    }
 });
 
 mongoose.model('Patrocinador', PatrocinadorSchema);
