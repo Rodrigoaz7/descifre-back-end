@@ -14,7 +14,7 @@ exports.realizarAtivacao = async (req, res) =>{
     
     if(buscaVoucher.status){
         try {
-            await Voucher.update({codigoVoucher:req.body.codigoVoucher, patrocinador: usuario._id},{
+            await Voucher.update({_id:req.body.idVoucher, patrocinador: usuario._id},{
                 $set:{
                     status:false
                 }
@@ -25,8 +25,5 @@ exports.realizarAtivacao = async (req, res) =>{
         }
     }else{
         return res.status(200).json({status: false, msg:"Voucher já ativado."});
-    }
-    
-    
-    
+    }  
 };

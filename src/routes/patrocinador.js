@@ -17,7 +17,7 @@ module.exports = (application) => {
 
     application.get(`${variables.base}/administrador/patrocinadores/:token`, permissao.administrador, (req, res) => {controllerGetPatrocinador.listarPatrocinadores(req, res)});
 
-    application.get(`${variables.base}/usuario/patrocinador/:idRodada/:token`, permissao.administrador, (req, res) => {getPatrocinador.obterPatrocinador(req, res)});
+    application.get(`${variables.base}/usuario/patrocinador/:idRodada/:token`, permissao.usuario, (req, res) => {getPatrocinador.obterPatrocinador(req, res)});
 
     application.get(`${variables.base}/usuario/patrocinadores/:idRodada/:token`,permissao.usuario,(req, res)=>{controllerLogo.enviarLogo(req, res)});
 };

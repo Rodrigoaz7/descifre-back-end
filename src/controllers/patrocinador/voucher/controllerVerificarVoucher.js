@@ -7,6 +7,7 @@ const utilToken = require('../../../util/token');
 
 exports.realizarVerificacao = async (req, res) =>{
     if(!req.params.codigoVoucher) return res.status(404).json({status: false, erros:[{msg:'Você deve informar um código de voucher'}]});
+    
     const usuario = await utilToken.decoded(req.params.token);
     
     const buscarVoucher = await Voucher.findOne({codigoVoucher:req.params.codigoVoucher, patrocinador: usuario._id});

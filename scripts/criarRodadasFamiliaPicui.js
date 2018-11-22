@@ -1,6 +1,3 @@
-/*
-*   Autor Marcus Dantas
-*/
 const mongoose = require('mongoose');
 const Rodada = mongoose.model('Rodada');
 const schedule = require('node-schedule');
@@ -22,56 +19,38 @@ exports.criarRodada = async () => {
         let dataFinalizacaoRodadaNoite = addHours(dataAtual, 24);
 
         let rodadaManha = new Rodada({
-            titulo: `Rodada da manhã ${dataAtual.toLocaleDateString()}`,
+            titulo: `Rodada Restaurante Família Picuí ${dataAtual.toLocaleDateString()}`,
             dataAbertura: dataAtual,
             dataFinalizacao: dataFinalizacaoRodadaManha,
             duracao: 1,
             premiacao: 10,
             jogadores: [],
             ganhadores: [{
-                porcentagemPremio: 50
-            },
-            {
-                porcentagemPremio: 30
-            },
-            {
-                porcentagemPremio: 20
+                porcentagemPremio: 100
             }],
             taxa_entrada: 0
         });
         let rodadaTarde = new Rodada({
-            titulo: `Rodada da tarde ${dataAtual.toLocaleDateString()}`,
+            titulo: `Rodada Restaurante Família Picuí ${dataAtual.toLocaleDateString()}`,
             dataAbertura: dataFinalizacaoRodadaManha,
             dataFinalizacao: dataFinalizacaoRodadaTarde,
             duracao: 1,
             premiacao: 10,
             jogadores: [],
             ganhadores: [{
-                porcentagemPremio: 50
-            },
-            {
-                porcentagemPremio: 30
-            },
-            {
-                porcentagemPremio: 20
+                porcentagemPremio: 100
             }],
             taxa_entrada: 0
         });
         let rodadaNoite = new Rodada({
-            titulo: `Rodada da Noite ${dataAtual.toLocaleDateString()}`,
+            titulo: `Rodada Restaurante Família Picuí ${dataAtual.toLocaleDateString()}`,
             dataAbertura: dataFinalizacaoRodadaTarde,
             dataFinalizacao: dataFinalizacaoRodadaNoite,
             duracao: 1,
             premiacao: 10,
             jogadores: [],
             ganhadores: [{
-                porcentagemPremio: 50
-            },
-            {
-                porcentagemPremio: 30
-            },
-            {
-                porcentagemPremio: 20
+                porcentagemPremio: 100
             }],
             taxa_entrada: 0
         });
