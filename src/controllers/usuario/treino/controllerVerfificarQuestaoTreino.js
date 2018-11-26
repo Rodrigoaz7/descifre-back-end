@@ -42,14 +42,14 @@ exports.processarQuestao = async (req, res) => {
     if(String(req.body.respostaQuestao) === "Pular"){
         await Treino.update({_id:req.body.idTreino},
             {
-                $inc:{
-                    pontuacao: -1
-                },
+                // $inc:{
+                //     pontuacao: -1
+                // },
                 $push:{
                     questoesJogadas:{
                         questao: req.body.idQuestao,
                         statusJogada: false,
-                        pontuacao: -1
+                        pontuacao: 0
                     }
                 }
             }
@@ -107,13 +107,14 @@ exports.processarQuestao = async (req, res) => {
         await Treino.update({_id:req.body.idTreino},
             {
                 $inc:{
-                    pontuacao: 1
+                    pontuacao: 10,
+                    qntdVidas: 1
                 },
                 $push:{
                     questoesJogadas:{
                         questao: req.body.idQuestao,
                         statusJogada: true,
-                        pontuacao: 1
+                        pontuacao: 10
                     }
                 }
             }
