@@ -62,6 +62,7 @@ exports.contadorHomeScreen = async (req, res) =>{
     const qntdQuestao = await Questao.count({});
     const qntdRodada = await Rodada.count({});
     const qntdTransacoes = await Transacao.count({});
+    const qntdRequisicoesSaque = await Transacao.count({tipo:"saque", status:0})
 
     let data = {
         status: true,
@@ -71,7 +72,8 @@ exports.contadorHomeScreen = async (req, res) =>{
             qntdUsuarios,
             qntdTransacoes,
             contadorUsuariosSemana,
-            contadorCifrasSemana
+            contadorCifrasSemana,
+            qntdRequisicoesSaque
         }
     };
 
