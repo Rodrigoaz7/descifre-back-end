@@ -25,20 +25,20 @@ const env = require('dotenv');
 /* Importando o módulo do mongoose. */
 const mongoose = require('mongoose');
 
-const cors = require('cors');
+//const cors = require('cors');
 
-/*app.use(function(req, res, next){
+app.use(function(req, res, next){
 
     res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
-    res.setHeader("Access-Control-Allow-Headers", "content-type");
+    res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, PATCH, DELETE");
+    res.setHeader("Access-Control-Allow-Headers", "Origin,X-Requested-With,Content-Type,Accept,content-type,application/json");
     res.setHeader("Access-Control-Allow-Credentials", true);
 
     next();
 
-});*/
+});
 
-app.use(cors());
+//app.use(cors());
 
 /* configurar o middleware express.static */
 app.use(express.static('./public'));
