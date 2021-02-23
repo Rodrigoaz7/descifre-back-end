@@ -25,7 +25,9 @@ const env = require('dotenv');
 /* Importando o módulo do mongoose. */
 const mongoose = require('mongoose');
 
-app.use(function(req, res, next){
+const cors = require('cors');
+
+/*app.use(function(req, res, next){
 
     res.setHeader("Access-Control-Allow-Origin", "*");
     res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
@@ -34,7 +36,9 @@ app.use(function(req, res, next){
 
     next();
 
-});
+});*/
+
+app.use(cors());
 
 /* configurar o middleware express.static */
 app.use(express.static('./public'));
