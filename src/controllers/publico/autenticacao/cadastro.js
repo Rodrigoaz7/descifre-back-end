@@ -20,7 +20,7 @@ exports.realizarCadastro = async (req, res) => {
 
     /* Get nos erros do formulário */
     const erros = validators.publico.autenticacao.cadastro.errosCadastro(req);
-    
+
     if (erros) return res.status(httpCodes.getValue('NaoAutorizado')).json({status:false, erros:erros});
     
     /*
@@ -76,9 +76,9 @@ exports.realizarCadastro = async (req, res) => {
 
     if(salvarToken.error) returns.returnError(res, salvarToken);
     
-    let htmlEnvio = templateCadastro.htmlRetorno(salvarPessoa.nome);
+    // let htmlEnvio = templateCadastro.htmlRetorno(salvarPessoa.nome);
 
-    const dataEmail = await controllerEnviarEmail.enviarEmail([salvarPessoa.email],"Bem vindo ao De$cifre", htmlEnvio);
+    // const dataEmail = await controllerEnviarEmail.enviarEmail([salvarPessoa.email],"Bem vindo ao De$cifre", htmlEnvio);
     
     /* Retorno com sucesso */
     return res.status(httpCodes.get('OK')).json({status: true, msg:responses.getValue('usuarioCriado'), token: token, usuario: usuarioBusca});

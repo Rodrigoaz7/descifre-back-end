@@ -59,7 +59,7 @@ app.use(morgan('dev'));
 env.config({ path: './env/heroku.env' });
 
 /* Conecta com o banco de dados e lida com problemas de conexão */
-mongoose.connect(process.env.DATABASE, { useNewUrlParser: true });
+mongoose.connect(process.env.DATABASE, { useNewUrlParser: false });
 mongoose.Promise = global.Promise; // → Queremos que o mongoose utilize promises ES6
 mongoose.connection.on('error',err => {
 	console.log(`🙅 🚫 → ${err.message}`);
