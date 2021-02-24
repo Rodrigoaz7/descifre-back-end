@@ -17,8 +17,12 @@ const path = require('path');
 exports.cadastrarPatrocinador = async (req, res) => {
 	/* Get nos erros do formulário */
     const erros = validators.administrador.patrocinadores.criarPatrocinador.errosCadastro(req);
+
     if (erros) return res.status(httpCodes.getValue('ReqInvalida')).json({status:false, erros:erros});
-    
+    let arquivoEnviado = req.files !== null;
+    if((arquivoEnviado && !req.files.logomarca) || !arquivoEnviado){
+        return res.status(httpCodes.getValue('ReqInvalida')).json({status:false, erros:[{msg: "Você deve fornecer uma logomarca"}]});
+    }
     let novoPatrocinador = new Patrocinador(req.body);
 
     // capturando urls para criacao de diretorio de nova imagem
@@ -29,7 +33,7 @@ exports.cadastrarPatrocinador = async (req, res) => {
     if(extensao_arquivo !== ".jpg" && extensao_arquivo !== ".png" && extensao_arquivo !== ".jpeg"){
         return res.status(500).json({status: false, msg: "Extensão inválida de imagem." });
     }
-    
+
     novoPatrocinador.logomarca = url_imagem;
     let salvarPatrocinador = genericDAO.salvar(novoPatrocinador);
     if(salvarPatrocinador.error) return returns.error(res, salvarPatrocinador);

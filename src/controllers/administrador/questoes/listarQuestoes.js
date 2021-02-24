@@ -22,7 +22,7 @@ exports.listarQuestoes = async (req, res) => {
 		limite_inferior = parseInt(req.query.limite)*quantidade_retornada-quantidade_retornada;
 	}
 
-	if(req.query.categoria){
+	if(req.query.categoria && req.query.categoria !== "undefined"){
 		lista_questoes = await Questao.paginate({
 			categoria: req.query.categoria, 
 		},{

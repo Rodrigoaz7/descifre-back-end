@@ -5,5 +5,6 @@ exports.errosCadastro = (req) => {
     req.assert('quantia_paga', 'A quantia paga deve ser informada').notEmpty();
     
     const erros = req.validationErrors();
+
     return erros;
 };
