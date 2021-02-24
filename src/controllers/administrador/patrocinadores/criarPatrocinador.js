@@ -23,8 +23,12 @@ exports.cadastrarPatrocinador = async (req, res) => {
     if((arquivoEnviado && !req.files.logomarca) || !arquivoEnviado){
         return res.status(httpCodes.getValue('ReqInvalida')).json({status:false, erros:[{msg: "Você deve fornecer uma logomarca"}]});
     }
-    let novoPatrocinador = new Patrocinador(req.body);
 
+    if(!req.body.rodadas_patrocinadas){
+        req.body.rodadas_patrocinadas = [];
+    }
+
+    let novoPatrocinador = new Patrocinador(req.body);
     // capturando urls para criacao de diretorio de nova imagem
     var url_imagem = path.join(__dirname + '/../../../uploads/patrocinadores/'+novoPatrocinador._id+'/'+req.files.logomarca.name); 
     var url_destino = path.join(__dirname + '/../../../uploads/patrocinadores/'+novoPatrocinador._id);
@@ -45,7 +49,7 @@ exports.cadastrarPatrocinador = async (req, res) => {
             if (erroFile) return console.log("ERRO");
         });
     });
-
+    
     /* Retorno com sucesso */
     return res.status(httpCodes.get('Criado')).json({status: true, msg:salvarPatrocinador});
 };

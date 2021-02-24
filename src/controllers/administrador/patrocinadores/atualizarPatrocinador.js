@@ -48,6 +48,14 @@ exports.atualizarPatrocinador = async (req, res) => {
         quantia_paga: req.body.quantia_paga
     }
 
+    if(!json_update.logomarca) {
+        delete json_update['logomarca'];
+    }
+
+    if(!json_update.rodadas_patrocinadas) {
+        json_update.rodadas_patrocinadas = [];
+    }
+
     let atualizarPatrocinador = await genericDAO.atualizarUmObjeto(Patrocinador, json_search, json_update);
     if(atualizarPatrocinador.error) return returns.error(res, atualizarPatrocinador);
 
