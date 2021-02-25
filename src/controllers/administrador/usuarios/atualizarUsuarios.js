@@ -54,7 +54,11 @@ exports.atualizarUsuarios = async (req, res) => {
         //Remove imagem guaradada anteriormente
         let user_imagem = await Pessoa.findOne({_id: new ObjectID(req.body.idPessoa)});
         if(user_imagem.foto){
-            fs.unlinkSync(user_imagem.foto);
+            try {
+                fs.unlinkSync(user_imagem.foto);
+            } catch (error) {
+                console.log(error)
+            }
         }
 
     } else {
